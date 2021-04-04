@@ -20,6 +20,10 @@ CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
 //Path to a program.
 CMAKE_AR:FILEPATH=/usr/bin/ar
 
+//For backwards compatibility, what version of CMake commands and
+// syntax should this version of CMake try to support.
+CMAKE_BACKWARDS_COMPATIBILITY:STRING=2.4
+
 //No help, variable specified on the command line.
 CMAKE_BUILD_TYPE:STRING=Debug
 
@@ -103,7 +107,7 @@ CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
 CMAKE_INSTALL_PREFIX:PATH=/usr/local
 
 //ISPC compiler
-CMAKE_ISPC_COMPILER:FILEPATH=CMAKE_ISPC_COMPILER-NOTFOUND
+CMAKE_ISPC_COMPILER:STRING=/home/ruizinho/ispc-v1.15.0-linux/bin/ispc
 
 //Flags used by the ISPC compiler during all build types.
 CMAKE_ISPC_FLAGS:STRING=
@@ -226,16 +230,46 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//GCC Compiler?
+CONFIG_COMPILER:STRING=GNU
+
+//Target Vector ISA on host (SSE,AVX,AVX2, AVX512KNL, AVX512SKX,AVX512CLX)
+CONFIG_SPMD_TARGET:STRING=AVX2
+
+//Value Computed by CMake
+ESC-Spring2012_BINARY_DIR:STATIC=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src
+
+//Value Computed by CMake
+ESC-Spring2012_SOURCE_DIR:STATIC=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src
+
+//Single output directory for building all executables.
+EXECUTABLE_OUTPUT_PATH:PATH=
+
+//32vs64 bit addressing in ispc
+ISPC_ADDRESSING:STRING=32
+
+//Path to the ISPC executable.
+ISPC_EXECUTABLE:FILEPATH=/home/ruizinho/ispc-v1.15.0-linux/bin/ispc
+
+//Single output directory for building all libraries.
+LIBRARY_OUTPUT_PATH:PATH=
+
+//Value Computed by CMake
+Project_BINARY_DIR:STATIC=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug
+
+//Value Computed by CMake
+Project_SOURCE_DIR:STATIC=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer
+
 //Value Computed by CMake
 RTracer_BINARY_DIR:STATIC=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug
 
 //Value Computed by CMake
 RTracer_SOURCE_DIR:STATIC=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer
 
-//No help, variable specified on the command line.
+//Use acceleration structure
 USE_BVH:BOOL=TRUE
 
-//No help, variable specified on the command line.
+//Compile with ISPC
 USE_ISPC:BOOL=TRUE
 
 
@@ -247,6 +281,8 @@ USE_ISPC:BOOL=TRUE
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
+//STRINGS property for variable: CMAKE_BUILD_TYPE
+CMAKE_BUILD_TYPE-STRINGS:INTERNAL=Debug;Release;RelWithDebInfo
 //This is the directory where this CMakeCache.txt was created
 CMAKE_CACHEFILE_DIR:INTERNAL=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug
 //Major version of cmake used to create the current loaded cache
@@ -319,6 +355,14 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
+//Test CMAKE_HAVE_LIBC_PTHREAD
+CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=
+//Have library pthreads
+CMAKE_HAVE_PTHREADS_CREATE:INTERNAL=
+//Have library pthread
+CMAKE_HAVE_PTHREAD_CREATE:INTERNAL=1
+//Have include pthread.h
+CMAKE_HAVE_PTHREAD_H:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer
@@ -353,7 +397,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=2
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -396,4 +440,12 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//STRINGS property for variable: CONFIG_SPMD_TARGET
+CONFIG_SPMD_TARGET-STRINGS:INTERNAL=NONE;SSE;AVX;AVX2;AVX512KNL;AVX512SKX;AVX512CLX;NEON4;NEON8
+//Details about finding Threads
+FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
+//ADVANCED property for variable: ISPC_ADDRESSING
+ISPC_ADDRESSING-ADVANCED:INTERNAL=1
+//STRINGS property for variable: ISPC_ADDRESSING
+ISPC_ADDRESSING-STRINGS:INTERNAL=32;64
 

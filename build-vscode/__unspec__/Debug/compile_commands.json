@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src",
+  "command": "/usr/bin/c++ -DCONFIG_SIMD_WIDTH=8 -DCONFIG_TARGET_AVX2=1 -DUSE_BVH -DUSE_ISPC -I/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug -fPIC -fvisibility-inlines-hidden -fvisibility=hidden  -g -ftree-ter -fPIE -std=gnu++1z -o CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o -c /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.cpp",
+  "file": "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.cpp"
+},
+{
+  "directory": "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src",
+  "command": "/usr/bin/c++ -DCONFIG_SIMD_WIDTH=8 -DCONFIG_TARGET_AVX2=1 -DUSE_BVH -DUSE_ISPC -I/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug -fPIC -fvisibility-inlines-hidden -fvisibility=hidden  -g -ftree-ter -fPIE -std=gnu++1z -o CMakeFiles/ESCViewer2021.dir/main.cpp.o -c /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp",
+  "file": "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp"
+}
+]

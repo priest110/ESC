@@ -95,6 +95,13 @@
         "iomanip": "cpp",
         "queue": "cpp",
         "set": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "*.tcc": "cpp",
+        "clocale": "cpp",
+        "codecvt": "cpp",
+        "condition_variable": "cpp",
+        "filesystem": "cpp",
+        "memory_resource": "cpp",
+        "cinttypes": "cpp"
     },
 }

@@ -1,0 +1,5 @@
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/CMakeFiles/rebuild_cache.dir
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/CMakeFiles/edit_cache.dir
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src/CMakeFiles/rebuild_cache.dir
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src/CMakeFiles/ESCViewer2021.dir
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src/CMakeFiles/edit_cache.dir

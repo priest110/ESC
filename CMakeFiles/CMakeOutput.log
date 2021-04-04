@@ -437,3 +437,39 @@ Parsed CXX implicit link information from above output:
   implicit fwks: []
 
 
+Compiling the ISPC compiler identification source file "CMakeISPCCompilerId.ispc" succeeded.
+Compiler: /home/ruizinho/ispc-v1.15.0-linux/bin/ispc 
+Build flags: 
+Id flags: -o;cmake_ispc_output 
+
+The output was:
+0
+Warning: No --target specified on command-line. Using default system target 
+        "avx2-i32x8". 
+
+
+Compilation of the ISPC compiler identification source "CMakeISPCCompilerId.ispc" produced "cmake_ispc_output"
+
+The ISPC compiler identification is Intel, found in "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/CMakeFiles/3.19.7/CompilerIdISPC/cmake_ispc_output"
+
+Running the ISPC compiler: "/home/ruizinho/ispc-v1.15.0-linux/bin/ispc" -version
+Intel(r) Implicit SPMD Program Compiler (Intel(r) ISPC), 1.15.0 (build commit d385033d72042235 @ 20201219, LLVM 11.0.0)
+
+Detecting ISPC compiler ABI info compiled with the following output:
+Change Dir: /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_28994/fast && /usr/bin/make  -f CMakeFiles/cmTC_28994.dir/build.make CMakeFiles/cmTC_28994.dir/build
+make[1]: Entering directory '/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/CMakeFiles/CMakeTmp'
+Building ISPC object CMakeFiles/cmTC_28994.dir/CMakeISPCCompilerABI.ispc.o
+/home/ruizinho/ispc-v1.15.0-linux/bin/ispc  @CMakeFiles/cmTC_28994.dir/includes_ISPC.rsp  -o CMakeFiles/cmTC_28994.dir/CMakeISPCCompilerABI.ispc.o --emit-obj /usr/local/share/cmake-3.19/Modules/CMakeISPCCompilerABI.ispc -h /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/CMakeFiles/CMakeTmp/CMakeFiles/cmTC_28994.dir//CMakeISPCCompilerABI_ispc.h
+Warning: No --target specified on command-line. Using default system target 
+        "avx2-i32x8". 
+Linking ISPC static library libcmTC_28994.a
+/usr/local/bin/cmake -P CMakeFiles/cmTC_28994.dir/cmake_clean_target.cmake
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_28994.dir/link.txt --verbose=1
+/usr/bin/ar qc libcmTC_28994.a CMakeFiles/cmTC_28994.dir/CMakeISPCCompilerABI.ispc.o
+/usr/bin/ranlib libcmTC_28994.a
+make[1]: Leaving directory '/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/CMakeFiles/CMakeTmp'
+
+
+

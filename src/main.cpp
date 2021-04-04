@@ -1,4 +1,3 @@
-
 #include <chrono>
 #include <cstring>
 #include <experimental/filesystem>
@@ -15,12 +14,14 @@
 #include "scene/camera.h"
 #include "scene/ray_triangle.h"
 #include "scene/scene.h"
+#include "scene/bvh.h"
 #include "scene/sceneloader.h"
 
 /* Calcula a interseção */
 bool intersect(const tracer::scene &SceneMesh, const tracer::vec3<float> &ori,
                const tracer::vec3<float> &dir, float &t, float &u, float &v,
                size_t &geomID, size_t &primID) {
+
   for (auto i = 0; i < SceneMesh.geometry.size(); i++) {
     for (auto f = 0; f < SceneMesh.geometry[i].face_index.size(); f++) {
       auto face = SceneMesh.geometry[i].face_index[f];
@@ -28,15 +29,15 @@ bool intersect(const tracer::scene &SceneMesh, const tracer::vec3<float> &ori,
               ori, dir, SceneMesh.geometry[i].vertex[face[0]],
               SceneMesh.geometry[i].vertex[face[1]],
               SceneMesh.geometry[i].vertex[face[2]], t, u, v)) {
-        geomID = i;
-        primID = f;
+        geomID = i; // figura geométrica intercetada
+        primID = f; // face(triângulo) intercetado
       }
     }
   }
   return (geomID != -1 && primID != -1);
 }
 
-/* Verifica se há colisão */
+/* Verifica se há oclusão(algum obstáculo a tapar a luz) e cria sombra */
 bool occlusion(const tracer::scene &SceneMesh, const tracer::vec3<float> &ori,
                const tracer::vec3<float> &dir, float &t) {
   float u, v;
@@ -106,13 +107,12 @@ int main(int argc, char *argv[]) {
       int i = 0;
 
       while (token != NULL) {
-        look[i++] = atof(token); 
+        //windowSize[i++] = atoi(token); 
         token = std::strtok(NULL, ",");
       }
 
       if (i != 2)
         throw std::runtime_error("Error parsing window size");
-      hasLook = true;
       arg++;
       continue;
     }
@@ -125,24 +125,53 @@ int main(int argc, char *argv[]) {
     SceneMesh = model::loadobj(modelname);
     ModelLoaded = true;
   }
-
+  
+  printf("Tamanho: %zu\n", SceneMesh.geometry.size());
+ 
   int image_width = windowSize.x; // 1024
   int image_height = windowSize.y; // 768
 
   tracer::camera cam(eye, look, tracer::vec3<float>(0, 1, 0), 60,
                      float(image_width) / image_height);
   // Render
+  
+  std::vector<tracer::triangle> triangles;
+  for(auto i = 0; i < SceneMesh.geometry.size(); i++){
+    for(auto j = 0; j < SceneMesh.geometry[i].face_index.size(); j++){
+      auto face = SceneMesh.geometry[i].face_index[j];
+      auto v0 = SceneMesh.geometry[i].vertex[face[0]];
+      auto v1 = SceneMesh.geometry[i].vertex[face[1]];
+      auto v2 = SceneMesh.geometry[i].vertex[face[2]];
+
+      tracer::triangle triang;
+      triang.geomID = i;
+      triang.primID = j;
+      triang.depth = 0;
+      triang.vertices.push_back(tracer::vec3<float>(v0.x, v0.y, v0.z));
+      triang.vertices.push_back(tracer::vec3<float>(v1.x, v1.y, v1.z));
+      triang.vertices.push_back(tracer::vec3<float>(v2.x, v2.y, v2.z));
+    
+      triangles.push_back(triang);
+    }
+  } 
+  printf("\n %lu triângulos", triangles.size());
+
+  tracer::Tree *bvh_tree = tracer::createTree(triangles);
+  tracer::create_bvh(bvh_tree, 0, 0);
+  //tracer::printLeafNodes(bvh_tree);
 
   tracer::vec3<float> *image =
       new tracer::vec3<float>[image_height * image_width];
 
   auto start_time = std::chrono::high_resolution_clock::now();
 
-/* A partir daqui começamos a paralelizar*/
-  std::vector<std::future<void>> tasks;
+  /* Estas 3 linhas de código geram floats aleatórios entre 0 e 1 */
   std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_real_distribution<float> distrib(0, 1.f);
+  std::mt19937 gen(rd()); 
+  std::uniform_real_distribution<float> distrib(0, 1.f); 
+  bool valido = false;
+  /* A partir daqui começamos a paralelizar*/
+  std::vector<std::future<void>> tasks;
   for (int h = image_height - 1; h >= 0; --h) {
     tasks.push_back(std::async(
       [&](const int h, const int image_width, const tracer::scene SceneMesh) -> void {
@@ -151,10 +180,10 @@ int main(int argc, char *argv[]) {
           size_t primID = -1;
 
           auto is = float(w) / (image_width - 1);
-          auto it = float(h) / (image_height - 1);
+          auto it = float(h) / (image_height - 1); 
           auto ray = cam.get_ray(is, it);
 
-          float t = std::numeric_limits<float>::max();
+          float t = std::numeric_limits<float>::max(); // largest possible value for type float
           float u = 0;
           float v = 0;
           if (intersect(SceneMesh, ray.origin, ray.dir, t, u, v, geomID, primID)) {
@@ -180,39 +209,42 @@ int main(int argc, char *argv[]) {
                   0, light.face_index.size() - 1);
 
               int faceID = distrib1(gen);
-              const auto &v0 = light.vertex[faceID];
+              const auto &v0 = light.vertex[faceID]; 
               const auto &v1 = light.vertex[faceID];
               const auto &v2 = light.vertex[faceID];
 
               auto P = v0 + ((v1 - v0) * float(distrib(gen)) +
-                            (v2 - v0) * float(distrib(gen)));
-
+                            (v2 - v0) * float(distrib(gen))); // de onde parte a luz
+              
               auto hit = ray.origin +
-                        ray.dir * (t - std::numeric_limits<float>::epsilon());
-              auto L = P - hit;
+                        ray.dir * (t - std::numeric_limits<float>::epsilon()); // onde a luz acerta
+              
+              auto L = P - hit; // vetor hit->P
+              
+              auto len = tracer::length(L); // tamanho do vetor
 
-              auto len = tracer::length(L);
+              t = len - std::numeric_limits<float>::epsilon(); // len = t
 
-              t = len - std::numeric_limits<float>::epsilon();
-
-              L = tracer::normalize(L);
+              L = tracer::normalize(L); // vetor hit -> P normalizado
 
               auto mat = SceneMesh.geometry[i].object_material;
               auto c =
                   (mat.ka * 0.5f + mat.ke) / float(SceneMesh.light_sources.size());
-
+            
+              /* Se há oclusão, então há sombra, sai do ciclo */
               if (occlusion(SceneMesh, hit, L, t))
                 continue;
-
+                
               auto d = dot(N, L);
 
+              /* Se o produto escalar entre N e L <= 0, então estes situam-se no plano da lâmpada ou N situa-se acima desse plano, e sai do ciclo*/
               if (d <= 0)
                 continue;
-
+              
               auto H = normalize((N + L) * 2.f);
 
               c = c + (mat.kd * d + mat.ks * pow(dot(N, H), mat.Ns)) /
-                          float(SceneMesh.light_sources.size());
+                          float(SceneMesh.light_sources.size()); // trata da cor do pixel
 
               image[h * image_width + w].r += c.r;
               image[h * image_width + w].g += c.g;
