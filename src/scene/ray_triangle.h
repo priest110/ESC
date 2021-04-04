@@ -24,6 +24,8 @@ bool intersect_triangle(vec3<float> orig, vec3<float> dir, vec3<float> vert0,
   if (det > -std::numeric_limits<float>::epsilon() &&
       det < std::numeric_limits<float>::epsilon())
     return false;
+
+  
   inv_det = 1.0f / det;
 
   /* calculate distance from vert0 to ray origin */
@@ -53,7 +55,6 @@ bool intersect_triangle(vec3<float> orig, vec3<float> dir, vec3<float> vert0,
   t = t2;
   u = u2;
   v = v2;
-
   return true;
 }
 

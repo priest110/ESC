@@ -56,11 +56,11 @@ bool occlusion(const tracer::scene &SceneMesh, const tracer::vec3<float> &ori,
 }
 
 int main(int argc, char *argv[]) {
-  std::string modelname = "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/models/cornell/CornellBox-Original.obj";
+  std::string modelname = "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/models/cornell/CornellBox-Original.obj";
   std::string outputname = "output_seq.ppm";
   bool hasEye{false}, hasLook{false};
   tracer::vec3<float> eye(0, 1, 3), look(0, 1, 0);
-  tracer::vec2<uint> windowSize(1024, 768);
+  tracer::vec2<unsigned> windowSize(1024, 768);
 
   for (int arg = 0; arg < argc; arg++) {
     if (std::string(argv[arg]) == "-m") {
@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
 
   tracer::Tree *bvh_tree = tracer::createTree(triangles);
   tracer::create_bvh(bvh_tree, 0, 0);
-  //tracer::printLeafNodes(bvh_tree);
+  tracer::printLeafNodes(bvh_tree);
 
   tracer::vec3<float> *image =
       new tracer::vec3<float>[image_height * image_width];
