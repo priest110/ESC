@@ -19,6 +19,8 @@ bool intersect_triangle(vec3<float> orig, vec3<float> dir, vec3<float> vert0,
 
   /* if determinant is near zero, ray lies in plane of triangle */
   det = dot(edge1, pvec);
+  
+  /* Até aqui verificamos se edege1 e pvec têm produto escalar = 0 */
 
   /* epsilon is the difference between 1.0 and the next representable value for float, ou seja, 0.0000000...1 */
   if (det > -std::numeric_limits<float>::epsilon() &&

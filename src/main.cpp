@@ -21,7 +21,6 @@
 bool intersect(const tracer::scene &SceneMesh, const tracer::vec3<float> &ori,
                const tracer::vec3<float> &dir, float &t, float &u, float &v,
                size_t &geomID, size_t &primID) {
-
   for (auto i = 0; i < SceneMesh.geometry.size(); i++) {
     for (auto f = 0; f < SceneMesh.geometry[i].face_index.size(); f++) {
       auto face = SceneMesh.geometry[i].face_index[f];
@@ -30,12 +29,13 @@ bool intersect(const tracer::scene &SceneMesh, const tracer::vec3<float> &ori,
               SceneMesh.geometry[i].vertex[face[1]],
               SceneMesh.geometry[i].vertex[face[2]], t, u, v)) {
         geomID = i; // figura geométrica intercetada
-        primID = f; // face(triângulo) intercetado
+        primID = f; // face(triângulo) intercetada
       }
     }
   }
   return (geomID != -1 && primID != -1);
 }
+
 
 /* Verifica se há oclusão(algum obstáculo a tapar a luz) e cria sombra */
 bool occlusion(const tracer::scene &SceneMesh, const tracer::vec3<float> &ori,
@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
                      float(image_width) / image_height);
   // Render
   
-  std::vector<tracer::triangle> triangles;
+  std::vector<tracer::triangle*> triangles;
   for(auto i = 0; i < SceneMesh.geometry.size(); i++){
     for(auto j = 0; j < SceneMesh.geometry[i].face_index.size(); j++){
       auto face = SceneMesh.geometry[i].face_index[j];
@@ -143,22 +143,23 @@ int main(int argc, char *argv[]) {
       auto v1 = SceneMesh.geometry[i].vertex[face[1]];
       auto v2 = SceneMesh.geometry[i].vertex[face[2]];
 
-      tracer::triangle triang;
-      triang.geomID = i;
-      triang.primID = j;
-      triang.depth = 0;
-      triang.vertices.push_back(tracer::vec3<float>(v0.x, v0.y, v0.z));
-      triang.vertices.push_back(tracer::vec3<float>(v1.x, v1.y, v1.z));
-      triang.vertices.push_back(tracer::vec3<float>(v2.x, v2.y, v2.z));
-    
+      tracer::triangle *triang = new tracer::triangle();
+      (*triang).geomID = i;
+      (*triang).primID = j;
+      (*triang).depth = 0;
+      (*triang).vertices.push_back(tracer::vec3<float>(v0.x, v0.y, v0.z));
+      (*triang).vertices.push_back(tracer::vec3<float>(v1.x, v1.y, v1.z));
+      (*triang).vertices.push_back(tracer::vec3<float>(v2.x, v2.y, v2.z));
+
       triangles.push_back(triang);
     }
   } 
   printf("\n %lu triângulos", triangles.size());
 
-  tracer::Tree *bvh_tree = tracer::createTree(triangles);
-  tracer::create_bvh(bvh_tree, 0, 0);
-  //tracer::printLeafNodes(bvh_tree);
+  tracer::Tree *bvh_tree = tracer::createEmpty();
+  tracer::Tree *bvh_tree2 = bvh_tree;
+  tracer::create_bvh(bvh_tree, triangles, 0, 0);
+  tracer::printLeafNodes(bvh_tree2);
 
   tracer::vec3<float> *image =
       new tracer::vec3<float>[image_height * image_width];
@@ -186,7 +187,9 @@ int main(int argc, char *argv[]) {
           float t = std::numeric_limits<float>::max(); // largest possible value for type float
           float u = 0;
           float v = 0;
-          if (intersect(SceneMesh, ray.origin, ray.dir, t, u, v, geomID, primID)) {
+          bvh_tree = bvh_tree2;
+          if (tracer::bvh_intersect(bvh_tree, ray.origin, ray.dir, t, u, v, geomID, primID, 0, 0)) {
+        //  if (intersect(SceneMesh, ray.origin, ray.dir, t, u, v, geomID, primID)) {
             auto i = geomID;
             auto f = primID;
             auto face = SceneMesh.geometry[i].face_index[f];
@@ -278,6 +281,10 @@ int main(int argc, char *argv[]) {
            << int(img.b * 255) << "\n";
     }
   }
+  /* Delete dos apontadores(faz sentido dar também dos NULL) */
+  for(tracer::triangle* tri : triangles)
+    delete tri;
+
   delete[] image;
   return 0;
 }
