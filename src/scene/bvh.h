@@ -50,6 +50,7 @@ namespace tracer {
       if( triangles.size() > 2 ){
             std::sort(triangles.begin(), triangles.end());
 
+<<<<<<< HEAD
             std::vector<tracer::triangle*> tri_left, tri_right;
 
             for(tracer::triangle* tri : triangles){
@@ -62,12 +63,30 @@ namespace tracer {
                     tri_right.push_back(tri);
                 if(depth%3 == 1)
                     axis_eval -=1;
+=======
+            std::vector<tracer::triangle> tri_left, tri_right;
+
+            for(tracer::triangle tri : triangles){
+                tri.depth = depth;
+            
+                if(tri.vertices[depth / 3][depth % 3] < axis_eval)
+                    tri_left.push_back(tri);
+                else
+                    tri_right.push_back(tri);
+>>>>>>> fa564eed5db1c01097395e7a45f87e915853b5b6
             }
             //printf("\n %d:Tamanho da lista esquerda: %lu", j, tri_left.size());
             //printf("\n %d:Tamanho da lista direita: %lu", j++,tri_right.size());
 
+<<<<<<< HEAD
             node -> left = createEmpty();
             node -> right= createEmpty();
+=======
+            //node -> leaf = NULL;  conteúdo a null
+
+            node -> left  = createTree(tri_left);
+            node -> right = createTree(tri_right);
+>>>>>>> fa564eed5db1c01097395e7a45f87e915853b5b6
             
             if (axis_eval > -std::numeric_limits<float>::epsilon() &&
                     axis_eval < std::numeric_limits<float>::epsilon())
@@ -196,6 +215,10 @@ namespace tracer {
         return (geomID != -1 && primID != -1); */
     }
     
+<<<<<<< HEAD
  } // namespace tracer
 
 
+=======
+ } // namespace tracer
+>>>>>>> fa564eed5db1c01097395e7a45f87e915853b5b6
