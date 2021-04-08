@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/main.cpp
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp
 chrono
 -
 cstring
@@ -30,25 +30,25 @@ thread
 type_traits
 -
 math/vec.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/math/vec.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/math/vec.h
 scene/camera.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/camera.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/camera.h
 scene/ray_triangle.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/ray_triangle.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/ray_triangle.h
 scene/scene.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/scene.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/scene.h
 scene/bvh.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/bvh.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/bvh.h
 scene/sceneloader.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/sceneloader.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.h
 
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/math/vec.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/math/vec.h
 math.h
 -
 string.h
 -
 
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/bvh.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/bvh.h
 algorithm
 -
 functional
@@ -62,29 +62,29 @@ cstdint
 vector
 -
 ../math/vec.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/math/vec.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/math/vec.h
 
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/camera.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/camera.h
 ../math/vec.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/math/vec.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/math/vec.h
 
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/ray_triangle.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/ray_triangle.h
 ../math/vec.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/math/vec.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/math/vec.h
 limits
 -
 
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/scene.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/scene.h
 ../math/vec.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/math/vec.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/math/vec.h
 vector
 -
 
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/sceneloader.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.h
 vector
 -
 string
 -
 scene.h
-/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/scene.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/scene.h
 

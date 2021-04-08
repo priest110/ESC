@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/main.cpp" "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/CMakeFiles/ESCViewer2021.dir/main.cpp.o"
-  "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/sceneloader.cpp" "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o"
+  "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp" "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles/ESCViewer2021.dir/main.cpp.o"
+  "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.cpp" "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
