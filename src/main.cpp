@@ -125,8 +125,6 @@ int main(int argc, char *argv[]) {
     SceneMesh = model::loadobj(modelname);
     ModelLoaded = true;
   }
-  
-  printf("Tamanho: %zu\n", SceneMesh.geometry.size());
  
   int image_width = windowSize.x; // 1024
   int image_height = windowSize.y; // 768
@@ -134,7 +132,13 @@ int main(int argc, char *argv[]) {
   tracer::camera cam(eye, look, tracer::vec3<float>(0, 1, 0), 60,
                      float(image_width) / image_height);
   // Render
-  
+
+  tracer::vec3<float> *image =
+      new tracer::vec3<float>[image_height * image_width];
+
+  /* A partir daqui começamos a paralelizar*/
+  auto start_time = std::chrono::high_resolution_clock::now();
+
   std::vector<tracer::triangle*> triangles;
   for(auto i = 0; i < SceneMesh.geometry.size(); i++){
     for(auto j = 0; j < SceneMesh.geometry[i].face_index.size(); j++){
@@ -146,7 +150,8 @@ int main(int argc, char *argv[]) {
       tracer::triangle *triang = new tracer::triangle();
       (*triang).geomID = i;
       (*triang).primID = j;
-      (*triang).depth = 0;
+      (*triang).center = tracer::vec3<float>((v0.x+v1.x+v2.x)/3,(v0.y+v1.y+v2.y)/3,(v0.z+v1.z+v2.z)/3);
+      (*triang).axis = 0;
       (*triang).vertices.push_back(tracer::vec3<float>(v0.x, v0.y, v0.z));
       (*triang).vertices.push_back(tracer::vec3<float>(v1.x, v1.y, v1.z));
       (*triang).vertices.push_back(tracer::vec3<float>(v2.x, v2.y, v2.z));
@@ -154,24 +159,16 @@ int main(int argc, char *argv[]) {
       triangles.push_back(triang);
     }
   } 
-  printf("\n %lu triângulos", triangles.size());
 
-  tracer::Tree *bvh_tree = tracer::createEmpty();
-  tracer::Tree *bvh_tree2 = bvh_tree;
-  tracer::create_bvh(bvh_tree, triangles, 0, 0);
-  tracer::printLeafNodes(bvh_tree2);
-
-  tracer::vec3<float> *image =
-      new tracer::vec3<float>[image_height * image_width];
-
-  auto start_time = std::chrono::high_resolution_clock::now();
+  tracer::Tree *bvh_tree = tracer::createTree(createBBox(triangles));
+  tracer::create_bvh(bvh_tree, triangles, 0);
+  //tracer::printLeafNodes(bvh_tree);
 
   /* Estas 3 linhas de código geram floats aleatórios entre 0 e 1 */
   std::random_device rd;
   std::mt19937 gen(rd()); 
   std::uniform_real_distribution<float> distrib(0, 1.f); 
-  bool valido = false;
-  /* A partir daqui começamos a paralelizar*/
+
   std::vector<std::future<void>> tasks;
   for (int h = image_height - 1; h >= 0; --h) {
     tasks.push_back(std::async(
@@ -187,9 +184,8 @@ int main(int argc, char *argv[]) {
           float t = std::numeric_limits<float>::max(); // largest possible value for type float
           float u = 0;
           float v = 0;
-          bvh_tree = bvh_tree2;
-         // if (tracer::bvh_intersect(bvh_tree, ray.origin, ray.dir, t, u, v, geomID, primID, 0, 0)) {
-          if (intersect(SceneMesh, ray.origin, ray.dir, t, u, v, geomID, primID)) {
+          if (tracer::bvh_intersect(bvh_tree, ray, t, u, v, geomID, primID)) {
+          //if (intersect(SceneMesh, ray.origin, ray.dir, t, u, v, geomID, primID)) {
             auto i = geomID;
             auto f = primID;
             auto face = SceneMesh.geometry[i].face_index[f];
@@ -284,6 +280,7 @@ int main(int argc, char *argv[]) {
   /* Delete dos apontadores(faz sentido dar também dos NULL) */
   for(tracer::triangle* tri : triangles)
     delete tri;
+  delete bvh_tree;  
 
   delete[] image;
   return 0;

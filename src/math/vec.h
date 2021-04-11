@@ -124,6 +124,14 @@ template <typename T> vec3<T> operator/(const vec3<T> &v, const T &scalar) {
   return r;
 }
 
+template <typename T> vec3<T> operator/(const T &scalar, const vec3<T> &v) {
+  vec3<T> r;
+  for (int i = 0; i < 3; i++) {
+    r.data[i] = -v.data[i];
+  }
+  return r;
+}
+
 template <typename T> vec3<T> operator*(const vec3<T> &v, const T &scalar) {
   vec3<T> r;
   for (int i = 0; i < 3; i++) {

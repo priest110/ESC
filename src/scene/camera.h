@@ -7,8 +7,15 @@ namespace tracer {
 struct ray {
   vec3<float> origin; // origem do raio
   vec3<float> dir; // direção do raio
+  vec3<float> inv_dir; // inverso da direção do raio
+  int sinal[3];
 
-  ray(vec3<float> origin, vec3<float> dir) : origin(origin), dir(dir) {}
+  ray(vec3<float> origin, vec3<float> dir) : origin(origin), dir(dir) {
+    inv_dir = 1.f / dir;
+    sinal[0] = (inv_dir.x < 0);
+    sinal[1] = (inv_dir.y < 0);
+    sinal[2] = (inv_dir.z < 0);      
+  }
 };
 
 struct camera {
