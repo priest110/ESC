@@ -31,4 +31,5 @@ struct scene {
 };
 
 
+
 } // namespace tracer

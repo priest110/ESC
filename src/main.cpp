@@ -1,6 +1,5 @@
 #include <chrono>
 #include <cstring>
-#include <experimental/filesystem>
 #include <fstream>
 #include <future>
 #include <iostream>
@@ -53,6 +52,66 @@ bool occlusion(const tracer::scene &SceneMesh, const tracer::vec3<float> &ori,
     }
   }
   return false;
+}
+
+struct block{
+  int l;
+  int c_start;
+  int c_end;
+
+  block(int l, int c_start, int c_end) : l(l), c_start(c_start), c_end(c_end){};
+};
+
+struct locked_queue{
+  int l;
+  int c_start;
+  int c_end;
+  locked_queue* next;
+};
+
+std::mutex mtx;
+
+void push_block(locked_queue** head, int line, int col1, int col2){
+  locked_queue* push_elem = new locked_queue();
+  if(!push_elem)
+    exit(1);
+  push_elem-> l = line;
+  push_elem-> c_start = col1;
+  push_elem-> c_end = col2;
+  push_elem->next= (*head); 
+  (*head) = push_elem;
+}
+
+block pull_block(locked_queue** head){
+  locked_queue* pull_elem;
+  if(!(*head))
+    exit(1);
+  pull_elem = (*head);
+  (*head) = (*head)->next;
+  pull_elem -> next = NULL;
+  block b = block(pull_elem->l, pull_elem->c_start, pull_elem->c_end);
+  free(pull_elem);
+  return b;
+}
+
+int get_size(locked_queue** head){
+  int count = 0;
+  locked_queue* current = (*head);
+  while(current != NULL){
+    count++;
+    current = current -> next;
+  }
+  return count;
+}
+
+void print_list(locked_queue** head){
+  locked_queue* current = (*head);
+  while(current != NULL){
+    int a = current -> c_start;
+    int b = current -> c_end;
+    printf("\nBloco: %d %d %p", a, b, &current);
+    current = current -> next;
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -161,6 +220,7 @@ int main(int argc, char *argv[]) {
   } 
 
   tracer::Tree *bvh_tree = tracer::createTree(createBBox(triangles));
+  
   tracer::create_bvh(bvh_tree, triangles, 0);
   //tracer::printLeafNodes(bvh_tree);
 
@@ -168,15 +228,36 @@ int main(int argc, char *argv[]) {
   std::random_device rd;
   std::mt19937 gen(rd()); 
   std::uniform_real_distribution<float> distrib(0, 1.f); 
+  
+  auto num_pixeis = image_height * image_width;
+  auto num_blocks = num_pixeis/64;
+  int line, col;
 
+  locked_queue* head = NULL; 
+  for (line= image_height - 1; line >= 0; --line) {
+    for (col = 0; col < image_width ; col+=64) {
+      push_block(&head, line, col, col+63);
+    }
+  }
   std::vector<std::future<void>> tasks;
+  //const auto NUM_THREADS = std::thread::hardware_concurrency();
+  //tasks.reserve(num_blocks/ NUM_THREADS+1);
+  
   for (int h = image_height - 1; h >= 0; --h) {
     tasks.push_back(std::async(
       [&](const int h, const int image_width, const tracer::scene SceneMesh) -> void {
         for (int w = 0; w < image_width; w++) {
+        //for(int i = 0; i < num_blocks; i++){  
+          //tasks.push_back(std::async(
+          //[&](const int i, const tracer::scene SceneMesh)-> void{
+            //  mtx.lock();
+            //block b = pull_block(&head);
+            //mtx.unlock();
+            //for(int bl = b.c_start; bl <= b.c_end; bl++){
           size_t geomID = -1;
           size_t primID = -1;
-
+          //int w = bl;
+          //int h = b.l;
           auto is = float(w) / (image_width - 1);
           auto it = float(h) / (image_height - 1); 
           auto ray = cam.get_ray(is, it);
@@ -222,7 +303,7 @@ int main(int argc, char *argv[]) {
               
               auto len = tracer::length(L); // tamanho do vetor
 
-              t = len - std::numeric_limits<float>::epsilon(); // len = t
+              t = len - 1*1/(10*10*10*10*10*10); // len = t
 
               L = tracer::normalize(L); // vetor hit -> P normalizado
 
@@ -231,7 +312,9 @@ int main(int argc, char *argv[]) {
                   (mat.ka * 0.5f + mat.ke) / float(SceneMesh.light_sources.size());
             
               /* Se há oclusão, então há sombra, sai do ciclo */
-              if (occlusion(SceneMesh, hit, L, t))
+              tracer::ray aux = tracer::ray(hit,L);
+              if(tracer::bvh_occlusion(bvh_tree, aux, t))
+              //if (occlusion(SceneMesh, hit, L, t))
                 continue;
                 
               auto d = dot(N, L);
@@ -251,6 +334,7 @@ int main(int argc, char *argv[]) {
             }
           }
         }
+      //}, i,SceneMesh));
       }, h, image_width, SceneMesh));
   }
   /* A partir daqui acabou a paralelização */

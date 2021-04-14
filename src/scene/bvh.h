@@ -3,6 +3,8 @@
 #include <array>
 #include <iostream>
 #include <cstdint>
+#include <mutex>
+#include <thread>
 #include <vector>
 #include "../math/vec.h"
 
@@ -76,7 +78,6 @@ namespace tracer {
     }
 
     int j = 0;
-    
     void create_bvh(Tree *node, std::vector<tracer::triangle*> triangles, int axis){
       //printf("\n %d:Tamanho da lista: %lu", j, triangles.size());
         if(triangles.size() == 1){
@@ -114,21 +115,24 @@ namespace tracer {
             //printf("\n %d:Tamanho da lista esquerda: %lu", j, tri_left.size());
             //printf("\n %d:Tamanho da lista direita: %lu", j++,tri_right.size());
 
-            axis = (axis == 2) ? 0 : axis+1;
-
+            //axis = (axis == 2) ? 0 : axis+1;
+            axis = (axis+1)%3;
+            
             std::vector<std::future<void>> tasks;
-            tasks.push_back(std::async(
+            tasks.push_back(std::move(std::async(
                     [&](Tree *node) -> void {
+                //        printf("\n %d:Tamanho da lista esquerda: %lu", j, tri_left.size());
                         BBox* left = createBBox(tri_left);
                         node -> left = createTree(left);
                         create_bvh(node -> left, tri_left, axis);
-                    },node));
-            tasks.push_back(std::async(
+                    },node)));
+            tasks.push_back(std::move(std::async(
                     [&](Tree *node) -> void {
+                //        printf("\n %d:Tamanho da lista direita: %lu", j++,tri_right.size());
                         BBox* right= createBBox(tri_right);
                         node -> right= createTree(right);
                         create_bvh(node -> right, tri_right, axis);
-                    },node));
+                    },node)));
 
             //create_bvh(node -> left, tri_left, axis);
             //create_bvh(node -> right, tri_right, axis);
@@ -215,6 +219,28 @@ namespace tracer {
             
         }
         return (geomID != -1 && primID != -1);
+    }
+
+    /* Calcula a interseção com bvh */
+    bool bvh_occlusion(Tree* tree, const tracer::ray &ray, float &t) {
+        float u, v;
+        bool flag1 = false, flag2 = false;
+        if(tree->left == NULL && tree -> right == NULL){
+            triangle* tri = (*tree->leaf).triangles[0];
+            if (tracer::intersect_triangle(ray.origin, ray.dir, (*tri).vertices[0],
+                    (*tri).vertices[1], (*tri).vertices[2], t, u, v)) {
+                return true;
+            } 
+        }
+        else{
+            bool interseta = box_intersect(ray, tree->leaf);
+            if(tree->left && interseta)
+                flag1 = bvh_occlusion(tree->left, ray, t);
+            if(tree->right && interseta)
+                flag2 = bvh_occlusion(tree->right, ray, t);
+            return flag1 || flag2;
+        }
+        return false;
     }
     
     int i = 0;
