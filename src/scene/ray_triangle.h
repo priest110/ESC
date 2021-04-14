@@ -23,8 +23,8 @@ bool intersect_triangle(vec3<float> orig, vec3<float> dir, vec3<float> vert0,
   /* Até aqui verificamos se edege1 e pvec têm produto escalar = 0 */
 
   /* epsilon is the difference between 1.0 and the next representable value for float, ou seja, 0.0000000...1 */
-  if (det > -std::numeric_limits<float>::epsilon() &&
-      det < std::numeric_limits<float>::epsilon())
+  if (det > -1e-6 &&
+      det < 1e-6)
     return false;
 
   
@@ -35,7 +35,7 @@ bool intersect_triangle(vec3<float> orig, vec3<float> dir, vec3<float> vert0,
 
   /* calculate U parameter and test bounds */
   float u2 = dot(tvec, pvec) * inv_det;
-  if (u2 < std::numeric_limits<float>::epsilon() || u2 > 1.0f)
+  if (u2 < 1e-6 || u2 > 1.0f)
     return false;
 
   /* prepare to test V parameter */
@@ -43,12 +43,12 @@ bool intersect_triangle(vec3<float> orig, vec3<float> dir, vec3<float> vert0,
  
   /* calculate V parameter and test bounds */
   float v2 = dot(dir, qvec) * inv_det;
-  if (v2 < std::numeric_limits<float>::epsilon() || u2 + v2 > 1.0f)
+  if (v2 < 1e-6 || u2 + v2 > 1.0f)
     return false;
 
   /* calculate t, ray intersects triangle */
   float t2 = dot(edge2, qvec) * inv_det;
-  if (t2 < std::numeric_limits<float>::epsilon())
+  if (t2 < 1e-6)
     return false;
 
   if (t2 >= t)

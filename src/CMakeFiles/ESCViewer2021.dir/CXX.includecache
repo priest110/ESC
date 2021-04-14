@@ -25,6 +25,8 @@ string
 -
 thread
 -
+deque
+-
 type_traits
 -
 math/vec.h

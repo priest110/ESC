@@ -102,6 +102,7 @@
         "condition_variable": "cpp",
         "filesystem": "cpp",
         "memory_resource": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "*.ispc": "c"
     },
 }

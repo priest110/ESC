@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <string>
 #include <thread>
+#include <deque>
 #include <type_traits>
 
 #include "math/vec.h"
@@ -220,7 +221,6 @@ int main(int argc, char *argv[]) {
   } 
 
   tracer::Tree *bvh_tree = tracer::createTree(createBBox(triangles));
-  
   tracer::create_bvh(bvh_tree, triangles, 0);
   //tracer::printLeafNodes(bvh_tree);
 
@@ -233,31 +233,39 @@ int main(int argc, char *argv[]) {
   auto num_blocks = num_pixeis/64;
   int line, col;
 
-  locked_queue* head = NULL; 
+  std::deque<block> head; 
   for (line= image_height - 1; line >= 0; --line) {
     for (col = 0; col < image_width ; col+=64) {
-      push_block(&head, line, col, col+63);
+      block b = block(line, col, col+63);
+      head.push_front(b);
     }
   }
   std::vector<std::future<void>> tasks;
-  //const auto NUM_THREADS = std::thread::hardware_concurrency();
-  //tasks.reserve(num_blocks/ NUM_THREADS+1);
+  std::vector<std::thread> threads;
+  const auto NUM_THREADS = std::thread::hardware_concurrency()/2;
+  tasks.reserve(NUM_THREADS);
   
-  for (int h = image_height - 1; h >= 0; --h) {
-    tasks.push_back(std::async(
-      [&](const int h, const int image_width, const tracer::scene SceneMesh) -> void {
-        for (int w = 0; w < image_width; w++) {
-        //for(int i = 0; i < num_blocks; i++){  
-          //tasks.push_back(std::async(
-          //[&](const int i, const tracer::scene SceneMesh)-> void{
-            //  mtx.lock();
-            //block b = pull_block(&head);
-            //mtx.unlock();
-            //for(int bl = b.c_start; bl <= b.c_end; bl++){
+  //for (int h = image_height - 1; h >= 0; --h) {
+    //tasks.push_back(std::async(
+      //[&](const int h, const int image_width, const tracer::scene SceneMesh) -> void {
+        //for (int w = 0; w < image_width; w++) {
+        for(int i = 0; i < NUM_THREADS; i++){  
+          threads.push_back(std::thread(
+          [&](const int i, const tracer::scene SceneMesh){
+            while(head.size() != 0){
+            mtx.lock();
+            if(head.size() == 0){
+              mtx.unlock();
+              break;
+            }
+            block b = head.front();
+            head.pop_front();
+            mtx.unlock();
+            for(int bl = b.c_start; bl <= b.c_end; bl++){
           size_t geomID = -1;
           size_t primID = -1;
-          //int w = bl;
-          //int h = b.l;
+          int w = bl;
+          int h = b.l;
           auto is = float(w) / (image_width - 1);
           auto it = float(h) / (image_height - 1); 
           auto ray = cam.get_ray(is, it);
@@ -281,7 +289,7 @@ int main(int argc, char *argv[]) {
               auto N2 = SceneMesh.geometry[i].normals[face[2]];
               N = normalize(N1 * u + N2 * v + N0 * (1 - u - v));
             }
-
+            tracer::vec3<float> hit = 0;
             for (auto &lightID : SceneMesh.light_sources) {
               auto light = SceneMesh.geometry[lightID];
               light.face_index.size();
@@ -296,14 +304,14 @@ int main(int argc, char *argv[]) {
               auto P = v0 + ((v1 - v0) * float(distrib(gen)) +
                             (v2 - v0) * float(distrib(gen))); // de onde parte a luz
               
-              auto hit = ray.origin +
-                        ray.dir * (t - std::numeric_limits<float>::epsilon()); // onde a luz acerta
+              hit = ray.origin +
+                        ray.dir * (t - (float)(1e-6)); // onde a luz acerta
               
               auto L = P - hit; // vetor hit->P
               
               auto len = tracer::length(L); // tamanho do vetor
 
-              t = len - 1*1/(10*10*10*10*10*10); // len = t
+              t = len - 1e-6; // len = t
 
               L = tracer::normalize(L); // vetor hit -> P normalizado
 
@@ -330,14 +338,52 @@ int main(int argc, char *argv[]) {
 
               image[h * image_width + w].r += c.r;
               image[h * image_width + w].g += c.g;
-              image[h * image_width + w].b += c.b;
+              image[h * image_width + w].b += c.b;  
             }
+            // Ambient Occlusion 
+            //auto c = tracer::vec3<float>(0,0,0);
+            /* Estas 3 linhas de código geram floats aleatórios entre -1 e 1 */
+           
+/*            std::uniform_real_distribution<float> distrib2(-1.f, 1.f);
+       
+            for(unsigned sample = 0; sample < 16; sample++)
+            {
+              auto P = normalize(tracer::vec3<float>(distrib2(gen),distrib2(gen),distrib2(gen)));              
+             
+              auto d = dot(N,P);
+
+              if( d < 0.f )
+              {
+                d = -d;
+                P = 1.f/P;
+              }
+              
+              auto mat = SceneMesh.geometry[i].object_material;
+              
+              tracer::ray aux = tracer::ray(hit,P);
+              if(tracer::bvh_occlusion(bvh_tree, aux, t))
+              //if(occlusion(SceneMesh, hit, P, t)) //substiuir pela occlusion da BVH
+                continue;
+
+              auto c = (mat.ka * 0.5f) / 16.f;
+
+              // color pixel
+              image[h * image_width + w].r += c.r;
+              image[h * image_width + w].g += c.g;
+              image[h * image_width + w].b += c.b;
+            } */
           }
         }
-      //}, i,SceneMesh));
-      }, h, image_width, SceneMesh));
+            }
+      }, i,SceneMesh));
+      //}, h, image_width, SceneMesh));
   }
   /* A partir daqui acabou a paralelização */
+
+  //for(auto i = 0; i < tasks.size(); i++)
+    //tasks[i].get();
+  for(auto &thr : threads)
+    thr.join();
 
   auto end_time = std::chrono::high_resolution_clock::now();
 
