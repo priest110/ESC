@@ -65,6 +65,8 @@ thread
 -
 vector
 -
+deque
+-
 ../math/vec.h
 /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/math/vec.h
 

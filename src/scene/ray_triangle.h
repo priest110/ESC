@@ -61,3 +61,4 @@ bool intersect_triangle(vec3<float> orig, vec3<float> dir, vec3<float> vert0,
 }
 
 } // namespace tracer
+

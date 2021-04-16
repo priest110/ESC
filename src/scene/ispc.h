@@ -25,6 +25,36 @@ namespace ispc { /* namespace */
 #endif
 #endif
 
+#ifndef __ISPC_STRUCT_vec3__
+#define __ISPC_STRUCT_vec3__
+struct vec3 {
+    float v[4];
+};
+#endif
+
+#ifndef __ISPC_STRUCT_triangle__
+#define __ISPC_STRUCT_triangle__
+struct triangle {
+    struct vec3 vertices[3];
+    int32_t primID;
+    int32_t geomID;
+};
+#endif
+
+
+///////////////////////////////////////////////////////////////////////////
+// Functions exported from ispc code
+///////////////////////////////////////////////////////////////////////////
+#if defined(__cplusplus) && (! defined(__ISPC_NO_EXTERN_C) || !__ISPC_NO_EXTERN_C )
+extern "C" {
+#endif // __cplusplus
+    extern float dot(struct vec3 &v0, struct vec3 &v1);
+    extern bool intersect_triangle(struct vec3 &orig, struct vec3 &dir, struct vec3 &vert0, struct vec3 &vert1, struct vec3 &vert2, float t, float u, float v);
+    extern void nada(struct triangle &tri);
+    extern struct vec3 operator-(struct vec3 &v0, struct vec3 &v1);
+#if defined(__cplusplus) && (! defined(__ISPC_NO_EXTERN_C) || !__ISPC_NO_EXTERN_C )
+} /* end extern C */
+#endif // __cplusplus
 
 
 #ifdef __cplusplus

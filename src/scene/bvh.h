@@ -6,6 +6,7 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include <deque>
 #include "../math/vec.h"
 
 namespace tracer {
@@ -77,9 +78,16 @@ namespace tracer {
         return newTree;
     }
 
-    int j = 0;
+    struct create_bvh_argument{
+        Tree *_node;
+        std::vector<tracer::triangle*> _triangles;
+        int _axis;
+
+        create_bvh_argument(Tree *node, std::vector<tracer::triangle*> triangles, int axis)
+            : _node(node), _triangles(triangles), _axis(axis) {};
+    };
+
     void create_bvh(Tree *node, std::vector<tracer::triangle*> triangles, int axis){
-      //printf("\n %d:Tamanho da lista: %lu", j, triangles.size());
         if(triangles.size() == 1){
             node -> leaf = createBBox(triangles);
             node -> left = NULL;
@@ -91,7 +99,6 @@ namespace tracer {
             std::vector<tracer::triangle*> tri_right(triangles.begin() + half_size, triangles.end());
             BBox* left = createBBox(tri_left);
             BBox* right= createBBox(tri_right);
-
             node -> left = createTree(left);
             node -> right= createTree(right);
         }
@@ -111,62 +118,21 @@ namespace tracer {
             std::size_t const half_size = triangles.size() / 2;
             std::vector<tracer::triangle*> tri_left(triangles.begin(), triangles.begin() + half_size);
             std::vector<tracer::triangle*> tri_right(triangles.begin() + half_size, triangles.end());
-
-            //printf("\n %d:Tamanho da lista esquerda: %lu", j, tri_left.size());
-            //printf("\n %d:Tamanho da lista direita: %lu", j++,tri_right.size());
-
-            //axis = (axis == 2) ? 0 : axis+1;
             axis = (axis+1)%3;
-            
-            std::vector<std::future<void>> tasks;
-            tasks.push_back(std::move(std::async(
-                    [&](Tree *node) -> void {
-                //        printf("\n %d:Tamanho da lista esquerda: %lu", j, tri_left.size());
-                        BBox* left = createBBox(tri_left);
-                        node -> left = createTree(left);
-                        create_bvh(node -> left, tri_left, axis);
-                    },node)));
-            tasks.push_back(std::move(std::async(
-                    [&](Tree *node) -> void {
-                //        printf("\n %d:Tamanho da lista direita: %lu", j++,tri_right.size());
-                        BBox* right= createBBox(tri_right);
-                        node -> right= createTree(right);
-                        create_bvh(node -> right, tri_right, axis);
-                    },node)));
 
-            //create_bvh(node -> left, tri_left, axis);
-            //create_bvh(node -> right, tri_right, axis);
+            BBox* left = createBBox(tri_left);
+            node -> left = createTree(left);
+            BBox* right= createBBox(tri_right);
+            node -> right= createTree(right);
+            create_bvh(node -> left, tri_left, axis);
+            create_bvh(node -> right, tri_right, axis);
         }
     }
 
-    /* Calcula a interseção com bbox */
+    /* Calcula a interseção com bbox(versão normal) */
     bool box_intersect(const tracer::ray ray, BBox* box){
         float tmin, tmax, tmin_y, tmax_y, tmin_z, tmax_z;
-        /* Versão otimizada */
-        // x
-        tmin = ((*box).vertices[ray.sinal[0]].x - ray.origin.x)/ray.inv_dir.x;
-        tmax = ((*box).vertices[1-ray.sinal[0]].x - ray.origin.x)/ray.inv_dir.x;
-
-        // y
-        tmin_y = ((*box).vertices[ray.sinal[1]].y - ray.origin.y)/ray.inv_dir.y;
-        tmax_y = ((*box).vertices[1-ray.sinal[1]].y - ray.origin.y)/ray.inv_dir.y;
-
-        if(tmin > tmax_y || tmin_y > tmax)
-            return false;
-        if(tmin_y > tmin) tmin = tmin_y;
-        if(tmax_y < tmax) tmax = tmax_y;
-
-        // z
-        tmin_z = ((*box).vertices[ray.sinal[2]].z - ray.origin.z)/ray.inv_dir.z;
-        tmax_z = ((*box).vertices[1-ray.sinal[2]].z - ray.origin.z)/ray.inv_dir.z;
-
-        if(tmin > tmax_z || tmin_z > tmax)
-            return false;
-        if(tmin_z > tmin) tmin = tmin_z;
-        if(tmax_z < tmax) tmax = tmax_z;
-
-        /* Versão normal */
-/*        // x
+         // x
         tmin = ((*box).vertices[0].x - ray.origin.x)/ray.dir.x;
         tmax = ((*box).vertices[1].x - ray.origin.x)/ray.dir.x;
         
@@ -195,7 +161,7 @@ namespace tracer {
 
         if(tmin_z > tmin) tmin = tmin_z;
         if(tmax_z < tmax) tmax = tmax_z; 
-*/
+
         return true;
     }
 
@@ -221,7 +187,7 @@ namespace tracer {
         return (geomID != -1 && primID != -1);
     }
 
-    /* Calcula a interseção com bvh */
+    /* Calcula a oclusão com bvh */
     bool bvh_occlusion(Tree* tree, const tracer::ray &ray, float &t) {
         float u, v;
         bool flag1 = false, flag2 = false;
@@ -242,55 +208,5 @@ namespace tracer {
         }
         return false;
     }
-    
-    int i = 0;
-    void printLeafNodes(Tree *root){
-        //printf("\n %f ", tri.vertices[0].x);
-        //newTree -> leaf = &tri;
-        //printf("%f \n", (*newTree ->leaf).vertices[0].x);
-        // if node is null, return
-        if (root->leaf == NULL && root->left == NULL && root->right == NULL)
-            return;
-        // if node is leaf node, print its data   
-        if (root->leaf != NULL && root->left == NULL && root->right == NULL){
-                i++;
-
-                printf("\nBounding Box %d\nVértice 1:", i);
-                std::cout << (*root->leaf).vertices[0].x << " ";
-                std::cout << (*root->leaf).vertices[0].y << " ";
-                std::cout << (*root->leaf).vertices[0].z << "\nVértice 2:";
-
-                std::cout << (*root->leaf).vertices[1].x << " ";
-                std::cout << (*root->leaf).vertices[1].y << " ";
-                std::cout << (*root->leaf).vertices[1].z << "\n";
-            
-         /*   for(triangle* tri : (*root->leaf).triangles){
-                printf("\nTriângulo %d\nVértice 1: ", i);
-                std::cout << (*tri).vertices[0].x << " ";
-                std::cout << (*tri).vertices[0].y << " ";
-                std::cout << (*tri).vertices[0].z << "\nVértice 2:";
-
-                std::cout << (*tri).vertices[1].x << " ";
-                std::cout << (*tri).vertices[1].y << " ";
-                std::cout << (*tri).vertices[1].z << "\nVértice 3:";
-                
-                std::cout << (*tri).vertices[2].x << " ";
-                std::cout << (*tri).vertices[2].y << " ";
-                std::cout << (*tri).vertices[2].z << "\nGeomID: "; 
-                std::cout << (*tri).geomID << " PrimID: " << (*tri).primID << "\n ";
-            }*/
-            return;
-        }
-        // if left child exists, check for leaf
-        // recursively
-        if (root->left)
-        printLeafNodes(root->left);
-            
-       // if right child exists, check for leaf
-        // recursively
-        if (root->right)
-        printLeafNodes(root->right); 
-    }
  } // namespace tracer
-
 

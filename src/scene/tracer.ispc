@@ -1,9 +1,10 @@
+/*
 struct vec3 
 {
     uniform float v[4];
 };
 
-struct triangle 
+export struct triangle 
 {
     vec3 vertices[3];
     int primID;
@@ -22,7 +23,7 @@ struct rayhit
     int primID;
 };
 
-uniform vec3 cross(uniform vec3 &v1, uniform vec3 &v2) {
+uniform vec3 cross(uniform vec3& v1, uniform vec3& v2) {
   uniform vec3 dest;
   dest.v[0] = v1.v[1] * v2.v[2] - v1.v[2] * v2.v[1];
   dest.v[1] = v1.v[2] * v2.v[0] - v1.v[0] * v2.v[2];
@@ -37,7 +38,7 @@ uniform float dot(uniform vec3& v0, uniform vec3& v1) {
   return sum;
 }
 
-uniform vec3 operator-(uniform vec3 &v0, uniform vec3 &v1) {
+uniform vec3 operator-(uniform vec3& v0, uniform vec3& v1) {
   uniform vec3 v;
   for(uniform int i = 0; i <3; i++)
     v.v[i] = v0.v[i] - v1.v[i];
@@ -45,50 +46,36 @@ uniform vec3 operator-(uniform vec3 &v0, uniform vec3 &v1) {
 }
 
 
-
-
-bool intersect_triangle(uniform vec3 orig, uniform vec3 dir, uniform vec3 vert0, uniform vec3 vert1, uniform vec3 vert2, float t, float u, float v) {
+uniform bool intersect_triangle(uniform vec3& orig, uniform vec3& dir, varying vec3& vert0, varying vec3& vert1, varying vec3& vert2, uniform float t, uniform float u, uniform float v) {
   uniform vec3 edge1, edge2, tvec, pvec, qvec;
   uniform double det, inv_det;
 
-  /* find vectors for two edges sharing vert0 */
   edge1 = vert1 - vert0;
   edge2 = vert2 - vert0;
-
-  /* begin calculating determinant - also used to calculate U parameter */
-  pvec = cross(dir, edge2);
-
-  /* if determinant is near zero, ray lies in plane of triangle */
-  det = dot(edge1, pvec);
   
-  /* Até aqui verificamos se edege1 e pvec têm produto escalar = 0 */
-
-  /* epsilon is the difference between 1.0 and the next representable value for float, ou seja, 0.0000000...1 */
+  pvec = cross(dir, edge2);
+  
+  det = dot(edge1, pvec);
+ 
   if (det > -1e-6 &&
       det < 1e-6)
     return false;
 
-  
   inv_det = 1.f / det;
 
-  /* calculate distance from vert0 to ray origin */
   tvec = orig - vert0;
 
-  /* calculate U parameter and test bounds */
-  float u2 = dot(tvec, pvec) * inv_det;
+  uniform float u2 = dot(tvec, pvec) * inv_det;
   if (u2 < 1e-6 || u2 > 1.0f)
     return false;
 
-  /* prepare to test V parameter */
   qvec = cross(tvec, edge1);
  
-  /* calculate V parameter and test bounds */
-  float v2 = dot(dir, qvec) * inv_det;
+  uniform float v2 = dot(dir, qvec) * inv_det;
   if (v2 < 1e-6 || u2 + v2 > 1.0f)
     return false;
 
-  /* calculate t, ray intersects triangle */
-  float t2 = dot(edge2, qvec) * inv_det;
+  uniform float t2 = dot(edge2, qvec) * inv_det;
   if (t2 < 1e-6)
     return false;
 
@@ -99,11 +86,28 @@ bool intersect_triangle(uniform vec3 orig, uniform vec3 dir, uniform vec3 vert0,
   u = u2;
   v = v2;
   return true;
+  
+} 
+export void nada(varying triangle* uniform tris){
+  return;
 }
-
+*/
 /* Calcula a interseção */
-
-
+/*
+export uniform bool intersect(uniform int tam, varying triangle* uniform tris, uniform vec3 &ori,
+               uniform vec3 &dir, uniform float &t, uniform float &u, uniform float &v,
+               uniform size_t &geomID, uniform size_t &primID) {
+  for(uniform int i = 0; i < tam; i++){
+    foreach(j = 0 ... 8){
+      if(intersect_triangle(ori, dir, tris[i].vertices[0], tris[i].vertices[1], tris[i].vertices[2], t, u, v)){
+        geomID = tris[i].geomID;
+        geomID = tris[i].primID;
+    }
+    }
+  }
+  return (geomID != -1 && primID != -1);
+}
+*/
 
 /* Verifica se há oclusão(algum obstáculo a tapar a luz) e cria sombra 
 extern "C" bool occlusion(uniform struct scene* SceneMesh, uniform struct vec3 ori,
@@ -123,20 +127,3 @@ extern "C" bool occlusion(uniform struct scene* SceneMesh, uniform struct vec3 o
   return false;
 }
 */
-
-int main(){
-    uniform triangle tri;
-    tri.vertices[0].v[0] = 0.0;
-    tri.vertices[0].v[1] = 0.0;
-    tri.vertices[0].v[2] = 0.0;
-    tri.vertices[1].v[0] = 1.0;
-    tri.vertices[1].v[1] = 1.0;
-    tri.vertices[1].v[2] = 1.0;
-    tri.vertices[2].v[0] = 0.5;
-    tri.vertices[2].v[1] = 0.5;
-    tri.vertices[2].v[2] = 0.5;
-    for(uniform int i = 0; i < 3; i++){
-        print("\nV: % % %", tri.vertices[i].v[0], tri.vertices[i].v[1], tri.vertices[i].v[2]);
-    }
-    return 0;
-}
