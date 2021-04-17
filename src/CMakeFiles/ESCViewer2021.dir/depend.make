@@ -5,6 +5,7 @@ CMakeFiles/ESCViewer2021.dir/main.cpp.o: main.cpp
 CMakeFiles/ESCViewer2021.dir/main.cpp.o: math/vec.h
 CMakeFiles/ESCViewer2021.dir/main.cpp.o: scene/bvh.h
 CMakeFiles/ESCViewer2021.dir/main.cpp.o: scene/camera.h
+CMakeFiles/ESCViewer2021.dir/main.cpp.o: scene/ispc.h
 CMakeFiles/ESCViewer2021.dir/main.cpp.o: scene/ray_triangle.h
 CMakeFiles/ESCViewer2021.dir/main.cpp.o: scene/scene.h
 CMakeFiles/ESCViewer2021.dir/main.cpp.o: scene/sceneloader.h

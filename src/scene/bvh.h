@@ -6,6 +6,7 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include <deque>
 #include "../math/vec.h"
 
 namespace tracer {
@@ -78,6 +79,21 @@ namespace tracer {
     }
 
     int j = 0;
+    //std::deque<std::future<void>> tasks;
+    std::mutex mtx;
+
+    struct create_bvh_argument
+    {
+        Tree *_node;
+        std::vector<tracer::triangle*> _triangles;
+        int _axis;
+
+        create_bvh_argument(Tree *node, std::vector<tracer::triangle*> triangles, int axis)
+            : _node(node), _triangles(triangles), _axis(axis) {};
+    };
+
+    std::deque<create_bvh_argument> task_queue;
+
     void create_bvh(Tree *node, std::vector<tracer::triangle*> triangles, int axis){
       //printf("\n %d:Tamanho da lista: %lu", j, triangles.size());
         if(triangles.size() == 1){
@@ -95,7 +111,8 @@ namespace tracer {
             node -> left = createTree(left);
             node -> right= createTree(right);
         }
-        else{
+        else
+        {
             std::sort(triangles.begin(), triangles.end());
 
             //double mid = (triangles[0]->center[axis] + triangles[triangles.size()-1]->center[axis])/2;
@@ -117,27 +134,74 @@ namespace tracer {
 
             //axis = (axis == 2) ? 0 : axis+1;
             axis = (axis+1)%3;
+
+            BBox* left = createBBox(tri_left);
+            node -> left = createTree(left);
+            BBox* right= createBBox(tri_right);
+            node -> right= createTree(right);
+
+            task_queue.push_back(create_bvh_argument(node->left, tri_left, axis));
+            task_queue.push_back(create_bvh_argument(node->right, tri_right, axis));
             
-            std::vector<std::future<void>> tasks;
-            tasks.push_back(std::move(std::async(
-                    [&](Tree *node) -> void {
+            //mtx.lock();
+            //tasks.push_back(std::move(std::async(
+            //        [&](Tree *node) -> void {
                 //        printf("\n %d:Tamanho da lista esquerda: %lu", j, tri_left.size());
-                        BBox* left = createBBox(tri_left);
-                        node -> left = createTree(left);
-                        create_bvh(node -> left, tri_left, axis);
-                    },node)));
-            tasks.push_back(std::move(std::async(
-                    [&](Tree *node) -> void {
+                        //BBox* left = createBBox(tri_left);
+                        //node -> left = createTree(left);
+                        
+                        //create_bvh(node -> left, tri_left, axis);
+            //        },node)));
+            //tasks.push_back(std::move(std::async(
+            //        [&](Tree *node) -> void {
                 //        printf("\n %d:Tamanho da lista direita: %lu", j++,tri_right.size());
-                        BBox* right= createBBox(tri_right);
-                        node -> right= createTree(right);
-                        create_bvh(node -> right, tri_right, axis);
-                    },node)));
+                        //create_bvh(node -> right, tri_right, axis);
+            //        },node)));
+
+            //tasks[tasks.size()-1].wait();
+            //tasks[tasks.size()-2].wait();
+
+            //mtx.unlock();
+
+            //for(auto i = 0; i < tasks.size(); i++)
+            //    tasks[i].get();
 
             //create_bvh(node -> left, tri_left, axis);
             //create_bvh(node -> right, tri_right, axis);
         }
     }
+
+    void create_bvh_aux(Tree *node, std::vector<tracer::triangle*> triangles, int axis)
+    {
+        std::vector<std::future<void>> threads;
+        threads.reserve(8);
+
+        task_queue.push_back(create_bvh_argument(node, triangles, axis));
+        for(auto i = 0; i < 8; i++)
+        {
+            threads.push_back(std::async(
+                [&]() -> void {
+                    while(task_queue.size() != 0)
+                    {
+                        mtx.lock();
+
+                        if(task_queue.size() == 0) { mtx.unlock(); break; }
+
+                        auto cba = task_queue.front();
+                        task_queue.pop_front();
+
+                        create_bvh(cba._node, cba._triangles, cba._axis);
+
+                        mtx.unlock();
+                    }
+                }
+            ));
+
+            //threads[i].wait();
+        }
+        for(int i = 0; i < 8; i++) threads[i].get();
+    }
+
 
     /* Calcula a interseção com bbox */
     bool box_intersect(const tracer::ray ray, BBox* box){

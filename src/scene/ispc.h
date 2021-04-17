@@ -25,6 +25,34 @@ namespace ispc { /* namespace */
 #endif
 #endif
 
+#ifndef __ISPC_STRUCT_v8_varying_vec3__
+#define __ISPC_STRUCT_v8_varying_vec3__
+struct v8_varying_vec3 {
+    float v[4];
+};
+#endif
+
+#ifndef __ISPC_STRUCT_v8_varying_triangle__
+#define __ISPC_STRUCT_v8_varying_triangle__
+__ISPC_ALIGNED_STRUCT__(32) v8_varying_triangle {
+    __ISPC_ALIGN__(4) struct v8_varying_vec3 vertices[3][8];
+    __ISPC_ALIGN__(32) int32_t primID[8];
+    __ISPC_ALIGN__(32) int32_t geomID[8];
+};
+#endif
+
+
+///////////////////////////////////////////////////////////////////////////
+// Functions exported from ispc code
+///////////////////////////////////////////////////////////////////////////
+#if defined(__cplusplus) && (! defined(__ISPC_NO_EXTERN_C) || !__ISPC_NO_EXTERN_C )
+extern "C" {
+#endif // __cplusplus
+    extern void nada(struct v8_varying_triangle * tris);
+    extern bool printamos(struct v8_varying_triangle * tris, uint32_t size);
+#if defined(__cplusplus) && (! defined(__ISPC_NO_EXTERN_C) || !__ISPC_NO_EXTERN_C )
+} /* end extern C */
+#endif // __cplusplus
 
 
 #ifdef __cplusplus

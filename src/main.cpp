@@ -9,6 +9,8 @@
 #include <thread>
 #include <deque>
 #include <type_traits>
+#include <stdlib.h>
+
 
 #include "math/vec.h"
 #include "scene/camera.h"
@@ -16,6 +18,7 @@
 #include "scene/scene.h"
 #include "scene/bvh.h"
 #include "scene/sceneloader.h"
+#include "scene/ispc.h"
 
 /* Calcula a interseção */
 bool intersect(const tracer::scene &SceneMesh, const tracer::vec3<float> &ori,
@@ -116,7 +119,7 @@ void print_list(locked_queue** head){
 }
 
 int main(int argc, char *argv[]) {
-  std::string modelname = "/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/models/cornell/CornellBox-Original.obj";
+  std::string modelname = "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/models/cornell/CornellBox-Original.obj";
   std::string outputname = "output_seq.ppm";
   bool hasEye{false}, hasLook{false};
   tracer::vec3<float> eye(0, 1, 3), look(0, 1, 0);
@@ -200,6 +203,20 @@ int main(int argc, char *argv[]) {
   auto start_time = std::chrono::high_resolution_clock::now();
 
   std::vector<tracer::triangle*> triangles;
+  ispc::v8_varying_triangle* triangles_ispc;
+
+  size_t size = 0;
+
+  // calcular o size (necessário)
+  for(auto i = 0; i < SceneMesh.geometry.size(); i++)
+  {
+    size += SceneMesh.geometry[i].face_index.size();
+  }
+
+  triangles_ispc = new ispc::v8_varying_triangle[size]; /*(ispc::triangle*)malloc(sizeof(ispc::triangle) * ( ( size / 8 ) + 1 ) );*/
+
+  int a = 0, b = 0;
+
   for(auto i = 0; i < SceneMesh.geometry.size(); i++){
     for(auto j = 0; j < SceneMesh.geometry[i].face_index.size(); j++){
       auto face = SceneMesh.geometry[i].face_index[j];
@@ -207,21 +224,59 @@ int main(int argc, char *argv[]) {
       auto v1 = SceneMesh.geometry[i].vertex[face[1]];
       auto v2 = SceneMesh.geometry[i].vertex[face[2]];
 
-      tracer::triangle *triang = new tracer::triangle();
-      (*triang).geomID = i;
-      (*triang).primID = j;
-      (*triang).center = tracer::vec3<float>((v0.x+v1.x+v2.x)/3,(v0.y+v1.y+v2.y)/3,(v0.z+v1.z+v2.z)/3);
-      (*triang).axis = 0;
-      (*triang).vertices.push_back(tracer::vec3<float>(v0.x, v0.y, v0.z));
-      (*triang).vertices.push_back(tracer::vec3<float>(v1.x, v1.y, v1.z));
-      (*triang).vertices.push_back(tracer::vec3<float>(v2.x, v2.y, v2.z));
+      ispc::v8_varying_vec3 vv0;
+      ispc::v8_varying_vec3 vv1;
+      ispc::v8_varying_vec3 vv2;
 
-      triangles.push_back(triang);
+      vv0.v[0] = v0.x; vv0.v[1] = v0.y; vv0.v[2] = v0.z;
+      vv1.v[0] = v1.x; vv1.v[1] = v1.y; vv1.v[2] = v1.z;
+      vv2.v[0] = v2.x; vv2.v[1] = v2.y; vv2.v[2] = v2.z;
+
+      triangles_ispc[a].vertices[0][b] = vv0;
+      triangles_ispc[a].vertices[1][b] = vv1;
+      triangles_ispc[a].vertices[2][b] = vv2;
+      triangles_ispc[a].geomID[b]      = i;
+      triangles_ispc[a].primID[b]      = j;
+
+      a = b == 7 ? a + 1 : a;
+      b = (b+1) % 8;
     }
   } 
 
+  //for(int i = 0; i < 5; i++)
+  //{
+  //  for(int j = 0; j < 8; j++)
+  //  {
+  //    std::cout << triangles_ispc[i].vertices[0][j].v[0] << "," << triangles_ispc[i].vertices[0][j].v[1] << "," << triangles_ispc[i].vertices[0][j].v[2] << std::endl;
+  //    std::cout << triangles_ispc[i].vertices[1][j].v[0] << "," << triangles_ispc[i].vertices[1][j].v[1] << "," << triangles_ispc[i].vertices[1][j].v[2] << std::endl;
+  //    std::cout << triangles_ispc[i].vertices[2][j].v[0] << "," << triangles_ispc[i].vertices[2][j].v[1] << "," << triangles_ispc[i].vertices[2][j].v[2] << std::endl;
+  //  }
+  //}
+
+  ispc::printamos(triangles_ispc, 8);
+
+  //for(auto i = 0; i < SceneMesh.geometry.size(); i++){
+  //  for(auto j = 0; j < SceneMesh.geometry[i].face_index.size(); j++){
+  //    auto face = SceneMesh.geometry[i].face_index[j];
+  //    auto v0 = SceneMesh.geometry[i].vertex[face[0]];
+  //    auto v1 = SceneMesh.geometry[i].vertex[face[1]];
+  //    auto v2 = SceneMesh.geometry[i].vertex[face[2]];
+//
+  //    tracer::triangle *triang = new tracer::triangle();
+  //    (*triang).geomID = i;
+  //    (*triang).primID = j;
+  //    (*triang).center = tracer::vec3<float>((v0.x+v1.x+v2.x)/3,(v0.y+v1.y+v2.y)/3,(v0.z+v1.z+v2.z)/3);
+  //    (*triang).axis = 0;
+  //    (*triang).vertices.push_back(tracer::vec3<float>(v0.x, v0.y, v0.z));
+  //    (*triang).vertices.push_back(tracer::vec3<float>(v1.x, v1.y, v1.z));
+  //    (*triang).vertices.push_back(tracer::vec3<float>(v2.x, v2.y, v2.z));
+//
+  //    triangles.push_back(triang);
+  //  }
+  //} 
+
   tracer::Tree *bvh_tree = tracer::createTree(createBBox(triangles));
-  tracer::create_bvh(bvh_tree, triangles, 0);
+  tracer::create_bvh_aux(bvh_tree, triangles, 0);
   //tracer::printLeafNodes(bvh_tree);
 
   /* Estas 3 linhas de código geram floats aleatórios entre 0 e 1 */
