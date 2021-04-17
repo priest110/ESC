@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
       int i = 0;
 
       while (token != NULL) {
-      windowSize[i++] = atoi(token); 
+      //windowSize[i++] = atoi(token); 
         token = std::strtok(NULL, ",");
       }
 

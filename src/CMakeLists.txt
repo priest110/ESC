@@ -8,6 +8,7 @@ find_package(Threads REQUIRED)
 set(SRC_FILES 
     scene/sceneloader.cpp
     main.cpp
+    scene/tracer.ispc
 )
 set(HDR_FILES )
 

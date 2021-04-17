@@ -25,19 +25,39 @@ namespace ispc { /* namespace */
 #endif
 #endif
 
-#ifndef __ISPC_STRUCT_vec3__
-#define __ISPC_STRUCT_vec3__
-struct vec3 {
-    float v[4];
+#ifndef __ISPC_STRUCT_varying_vec3__
+#define __ISPC_STRUCT_varying_vec3__
+__ISPC_ALIGNED_STRUCT__(32) varying_vec3 {
+    __ISPC_ALIGN__(32) float v[3][8];
 };
 #endif
 
 #ifndef __ISPC_STRUCT_triangle__
 #define __ISPC_STRUCT_triangle__
-struct triangle {
-    struct vec3 vertices[3];
-    int32_t primID;
-    int32_t geomID;
+__ISPC_ALIGNED_STRUCT__(32) triangle {
+    struct varying_vec3 vertices[3];
+    __ISPC_ALIGN__(32) int32_t primID[8];
+    __ISPC_ALIGN__(32) int32_t geomID[8];
+};
+#endif
+
+#ifndef __ISPC_STRUCT_uniform_vec3__
+#define __ISPC_STRUCT_uniform_vec3__
+struct uniform_vec3 {
+    float v[3];
+};
+#endif
+
+#ifndef __ISPC_STRUCT_ray__
+#define __ISPC_STRUCT_ray__
+__ISPC_ALIGNED_STRUCT__(32) ray {
+    struct uniform_vec3 ori;
+    struct uniform_vec3 dir;
+    __ISPC_ALIGN__(32) float t[8];
+    __ISPC_ALIGN__(32) float u[8];
+    __ISPC_ALIGN__(32) float v[8];
+    __ISPC_ALIGN__(32) int32_t geomID[8];
+    __ISPC_ALIGN__(32) int32_t primID[8];
 };
 #endif
 
@@ -48,10 +68,7 @@ struct triangle {
 #if defined(__cplusplus) && (! defined(__ISPC_NO_EXTERN_C) || !__ISPC_NO_EXTERN_C )
 extern "C" {
 #endif // __cplusplus
-    extern float dot(struct vec3 &v0, struct vec3 &v1);
-    extern bool intersect_triangle(struct vec3 &orig, struct vec3 &dir, struct vec3 &vert0, struct vec3 &vert1, struct vec3 &vert2, float t, float u, float v);
-    extern void nada(struct triangle &tri);
-    extern struct vec3 operator-(struct vec3 &v0, struct vec3 &v1);
+    extern bool ispc_intersect(int32_t tam, struct triangle &tri, struct ray &r);
 #if defined(__cplusplus) && (! defined(__ISPC_NO_EXTERN_C) || !__ISPC_NO_EXTERN_C )
 } /* end extern C */
 #endif // __cplusplus
