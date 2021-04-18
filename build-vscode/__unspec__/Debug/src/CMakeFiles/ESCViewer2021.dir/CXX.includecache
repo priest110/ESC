@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main_async.cpp
 chrono
 -
 cstring
@@ -37,8 +37,8 @@ scene/ray_triangle.h
 /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/ray_triangle.h
 scene/scene.h
 /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/scene.h
-scene/bvh.h
-/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/bvh.h
+scene/bvh_par.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/bvh_par.h
 scene/sceneloader.h
 /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.h
 
@@ -48,7 +48,7 @@ math.h
 string.h
 -
 
-/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/bvh.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/bvh_par.h
 algorithm
 -
 functional
@@ -65,8 +65,12 @@ thread
 -
 vector
 -
+deque
+-
 ../math/vec.h
 /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/math/vec.h
+camera.h
+/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/camera.h
 
 /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/camera.h
 ../math/vec.h

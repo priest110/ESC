@@ -57,7 +57,7 @@ bool occlusion(const tracer::scene &SceneMesh, const tracer::vec3<float> &ori,
 }
 
 int main(int argc, char *argv[]) {
-  std::string modelname = "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/models/cornell/CornellBox-Original.obj";
+  std::string modelname = "";
   std::string outputname = "output.ppm";
   bool hasEye{false}, hasLook{false};
   tracer::vec3<float> eye(0, 1, 3), look(0, 1, 0);
