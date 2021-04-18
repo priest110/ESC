@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/ESCViewer2021.dir/main.cpp.o"
+  "CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o"
   "CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o"
   "ESCViewer2021"
   "ESCViewer2021.pdb"

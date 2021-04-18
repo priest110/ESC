@@ -78,6 +78,7 @@ include src/CMakeFiles/ESCViewer2021.dir/flags.make
 
 src/CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o: src/CMakeFiles/ESCViewer2021.dir/flags.make
 src/CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o: ../../../src/scene/sceneloader.cpp
+src/CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o: src/CMakeFiles/ESCViewer2021.dir//tracer_ispc.h
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o"
 	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o -c /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.cpp
 
@@ -89,32 +90,52 @@ src/CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s"
 	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.cpp -o CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s
 
-src/CMakeFiles/ESCViewer2021.dir/main.cpp.o: src/CMakeFiles/ESCViewer2021.dir/flags.make
-src/CMakeFiles/ESCViewer2021.dir/main.cpp.o: ../../../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/ESCViewer2021.dir/main.cpp.o"
-	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ESCViewer2021.dir/main.cpp.o -c /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp
+src/CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: src/CMakeFiles/ESCViewer2021.dir/flags.make
+src/CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: ../../../src/main_ispc.cpp
+src/CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: src/CMakeFiles/ESCViewer2021.dir//tracer_ispc.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o"
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o -c /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main_ispc.cpp
 
-src/CMakeFiles/ESCViewer2021.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ESCViewer2021.dir/main.cpp.i"
-	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp > CMakeFiles/ESCViewer2021.dir/main.cpp.i
+src/CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.i"
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main_ispc.cpp > CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.i
 
-src/CMakeFiles/ESCViewer2021.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ESCViewer2021.dir/main.cpp.s"
-	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp -o CMakeFiles/ESCViewer2021.dir/main.cpp.s
+src/CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.s"
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main_ispc.cpp -o CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.s
+
+src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.o: src/CMakeFiles/ESCViewer2021.dir/flags.make
+src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.o: src/CMakeFiles/ESCViewer2021.dir/includes_ISPC.rsp
+src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.o: ../../../src/scene/tracer.ispc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building ISPC object src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.o"
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && /home/ruizinho/ispc-v1.15.0-linux/bin/ispc $(ISPC_DEFINES) $(ISPC_INCLUDES) $(ISPC_FLAGS) -o CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.o --emit-obj /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/tracer.ispc -h /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src/CMakeFiles/ESCViewer2021.dir//tracer_ispc.h
+
+src/CMakeFiles/ESCViewer2021.dir//tracer_ispc.h: src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.o
+	@$(CMAKE_COMMAND) -E touch_nocreate src/CMakeFiles/ESCViewer2021.dir//tracer_ispc.h
+
+src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing ISPC source to CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.i"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_ISPC_CREATE_PREPROCESSED_SOURCE
+
+src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling ISPC source to assembly CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.s"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_ISPC_CREATE_ASSEMBLY_SOURCE
 
 # Object files for target ESCViewer2021
 ESCViewer2021_OBJECTS = \
 "CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o" \
-"CMakeFiles/ESCViewer2021.dir/main.cpp.o"
+"CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o" \
+"CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.o"
 
 # External object files for target ESCViewer2021
 ESCViewer2021_EXTERNAL_OBJECTS =
 
 bin/ESCViewer2021: src/CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o
-bin/ESCViewer2021: src/CMakeFiles/ESCViewer2021.dir/main.cpp.o
+bin/ESCViewer2021: src/CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o
+bin/ESCViewer2021: src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.o
 bin/ESCViewer2021: src/CMakeFiles/ESCViewer2021.dir/build.make
 bin/ESCViewer2021: src/CMakeFiles/ESCViewer2021.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable ../bin/ESCViewer2021"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable ../bin/ESCViewer2021"
 	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ESCViewer2021.dir/link.txt --verbose=$(VERBOSE)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Copying models"
 	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/src && /usr/local/bin/cmake -E copy_directory /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/models /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug/bin/models

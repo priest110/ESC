@@ -142,32 +142,32 @@ ESCViewer2021/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ESCViewer2021.dir/build.make CMakeFiles/ESCViewer2021.dir/build
 .PHONY : ESCViewer2021/fast
 
-main.o: main.cpp.o
+main_ispc.o: main_ispc.cpp.o
 
-.PHONY : main.o
+.PHONY : main_ispc.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ESCViewer2021.dir/build.make CMakeFiles/ESCViewer2021.dir/main.cpp.o
-.PHONY : main.cpp.o
+main_ispc.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ESCViewer2021.dir/build.make CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o
+.PHONY : main_ispc.cpp.o
 
-main.i: main.cpp.i
+main_ispc.i: main_ispc.cpp.i
 
-.PHONY : main.i
+.PHONY : main_ispc.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ESCViewer2021.dir/build.make CMakeFiles/ESCViewer2021.dir/main.cpp.i
-.PHONY : main.cpp.i
+main_ispc.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ESCViewer2021.dir/build.make CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.i
+.PHONY : main_ispc.cpp.i
 
-main.s: main.cpp.s
+main_ispc.s: main_ispc.cpp.s
 
-.PHONY : main.s
+.PHONY : main_ispc.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ESCViewer2021.dir/build.make CMakeFiles/ESCViewer2021.dir/main.cpp.s
-.PHONY : main.cpp.s
+main_ispc.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ESCViewer2021.dir/build.make CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.s
+.PHONY : main_ispc.cpp.s
 
 scene/sceneloader.o: scene/sceneloader.cpp.o
 
@@ -205,9 +205,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ESCViewer2021"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... main_ispc.o"
+	@echo "... main_ispc.i"
+	@echo "... main_ispc.s"
 	@echo "... scene/sceneloader.o"
 	@echo "... scene/sceneloader.i"
 	@echo "... scene/sceneloader.s"

@@ -89,29 +89,29 @@ CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.cpp -o CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s
 
-CMakeFiles/ESCViewer2021.dir/main.cpp.o: CMakeFiles/ESCViewer2021.dir/flags.make
-CMakeFiles/ESCViewer2021.dir/main.cpp.o: main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ESCViewer2021.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ESCViewer2021.dir/main.cpp.o -c /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp
+CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: CMakeFiles/ESCViewer2021.dir/flags.make
+CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: main_ispc.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o -c /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main_ispc.cpp
 
-CMakeFiles/ESCViewer2021.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ESCViewer2021.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp > CMakeFiles/ESCViewer2021.dir/main.cpp.i
+CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main_ispc.cpp > CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.i
 
-CMakeFiles/ESCViewer2021.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ESCViewer2021.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main.cpp -o CMakeFiles/ESCViewer2021.dir/main.cpp.s
+CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main_ispc.cpp -o CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.s
 
 # Object files for target ESCViewer2021
 ESCViewer2021_OBJECTS = \
 "CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o" \
-"CMakeFiles/ESCViewer2021.dir/main.cpp.o"
+"CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o"
 
 # External object files for target ESCViewer2021
 ESCViewer2021_EXTERNAL_OBJECTS =
 
 ESCViewer2021: CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o
-ESCViewer2021: CMakeFiles/ESCViewer2021.dir/main.cpp.o
+ESCViewer2021: CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o
 ESCViewer2021: CMakeFiles/ESCViewer2021.dir/build.make
 ESCViewer2021: CMakeFiles/ESCViewer2021.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable ESCViewer2021"

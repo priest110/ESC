@@ -6,5 +6,5 @@ CXX_DEFINES = -DUSE_BVH -DUSE_ISPC
 
 CXX_INCLUDES = 
 
-CXX_FLAGS = 
+CXX_FLAGS = scene/ispc.o -no-pie
 

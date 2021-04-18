@@ -144,32 +144,32 @@ ESCViewer2021/fast:
 	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/build
 .PHONY : ESCViewer2021/fast
 
-main.o: main.cpp.o
+main_ispc.o: main_ispc.cpp.o
 
-.PHONY : main.o
+.PHONY : main_ispc.o
 
 # target to build an object file
-main.cpp.o:
-	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/main.cpp.o
-.PHONY : main.cpp.o
+main_ispc.cpp.o:
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o
+.PHONY : main_ispc.cpp.o
 
-main.i: main.cpp.i
+main_ispc.i: main_ispc.cpp.i
 
-.PHONY : main.i
+.PHONY : main_ispc.i
 
 # target to preprocess a source file
-main.cpp.i:
-	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/main.cpp.i
-.PHONY : main.cpp.i
+main_ispc.cpp.i:
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.i
+.PHONY : main_ispc.cpp.i
 
-main.s: main.cpp.s
+main_ispc.s: main_ispc.cpp.s
 
-.PHONY : main.s
+.PHONY : main_ispc.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/main.cpp.s
-.PHONY : main.cpp.s
+main_ispc.cpp.s:
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.s
+.PHONY : main_ispc.cpp.s
 
 scene/sceneloader.o: scene/sceneloader.cpp.o
 
@@ -198,6 +198,33 @@ scene/sceneloader.cpp.s:
 	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s
 .PHONY : scene/sceneloader.cpp.s
 
+scene/tracer.o: scene/tracer.ispc.o
+
+.PHONY : scene/tracer.o
+
+# target to build an object file
+scene/tracer.ispc.o:
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.o
+.PHONY : scene/tracer.ispc.o
+
+scene/tracer.i: scene/tracer.ispc.i
+
+.PHONY : scene/tracer.i
+
+# target to preprocess a source file
+scene/tracer.ispc.i:
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.i
+.PHONY : scene/tracer.ispc.i
+
+scene/tracer.s: scene/tracer.ispc.s
+
+.PHONY : scene/tracer.s
+
+# target to generate assembly for a file
+scene/tracer.ispc.s:
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/build-vscode/__unspec__/Debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ESCViewer2021.dir/build.make src/CMakeFiles/ESCViewer2021.dir/scene/tracer.ispc.s
+.PHONY : scene/tracer.ispc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -207,12 +234,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ESCViewer2021"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... main_ispc.o"
+	@echo "... main_ispc.i"
+	@echo "... main_ispc.s"
 	@echo "... scene/sceneloader.o"
 	@echo "... scene/sceneloader.i"
 	@echo "... scene/sceneloader.s"
+	@echo "... scene/tracer.o"
+	@echo "... scene/tracer.i"
+	@echo "... scene/tracer.s"
 .PHONY : help
 
 
