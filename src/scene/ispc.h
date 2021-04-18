@@ -69,8 +69,7 @@ __ISPC_ALIGNED_STRUCT__(32) ray {
 #if defined(__cplusplus) && (! defined(__ISPC_NO_EXTERN_C) || !__ISPC_NO_EXTERN_C )
 extern "C" {
 #endif // __cplusplus
-    extern bool ispc_intersect(struct triangle &tri, struct ray &r);
-    extern bool ispc_occlusion(struct triangle &tri, struct ray &r, int32_t h, int32_t w);
+    extern bool ispc_intersect(int32_t tam, struct triangle &tri, struct ray &r);
 #if defined(__cplusplus) && (! defined(__ISPC_NO_EXTERN_C) || !__ISPC_NO_EXTERN_C )
 } /* end extern C */
 #endif // __cplusplus

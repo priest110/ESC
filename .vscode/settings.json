@@ -103,6 +103,10 @@
         "filesystem": "cpp",
         "memory_resource": "cpp",
         "cinttypes": "cpp",
-        "*.ispc": "c"
+        "*.ispc": "c",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "ranges": "cpp",
+        "stop_token": "cpp"
     },
 }
