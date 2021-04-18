@@ -53,19 +53,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/Cellar/cmake/3.19.5/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/Cellar/cmake/3.19.5/bin/cmake -E rm -f
+RM = /usr/local/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src"
+CMAKE_SOURCE_DIR = /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src"
+CMAKE_BINARY_DIR = /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src
 
 # Include any dependencies generated for this target.
 include CMakeFiles/ESCViewer2021.dir/depend.make
@@ -78,16 +78,16 @@ include CMakeFiles/ESCViewer2021.dir/flags.make
 
 CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o: CMakeFiles/ESCViewer2021.dir/flags.make
 CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o: scene/sceneloader.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o -c "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/sceneloader.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o -c /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.cpp
 
 CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/sceneloader.cpp" > CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.cpp > CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.i
 
 CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/sceneloader.cpp" -o CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.cpp -o CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.s
 
 CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: CMakeFiles/ESCViewer2021.dir/flags.make
 CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: main_ispc.cpp
@@ -114,10 +114,10 @@ ESCViewer2021: CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o
 ESCViewer2021: CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o
 ESCViewer2021: CMakeFiles/ESCViewer2021.dir/build.make
 ESCViewer2021: CMakeFiles/ESCViewer2021.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable ESCViewer2021"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable ESCViewer2021"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ESCViewer2021.dir/link.txt --verbose=$(VERBOSE)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Copying models"
-	/usr/local/Cellar/cmake/3.19.5/bin/cmake -E copy_directory "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/models" "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/models"
+	/usr/local/bin/cmake -E copy_directory /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/models /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/models
 
 # Rule to build all files generated by this target.
 CMakeFiles/ESCViewer2021.dir/build: ESCViewer2021
@@ -129,6 +129,6 @@ CMakeFiles/ESCViewer2021.dir/clean:
 .PHONY : CMakeFiles/ESCViewer2021.dir/clean
 
 CMakeFiles/ESCViewer2021.dir/depend:
-	cd "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src" "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src" "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src" "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src" "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/CMakeFiles/ESCViewer2021.dir/DependInfo.cmake" --color=$(COLOR)
+	cd /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles/ESCViewer2021.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/ESCViewer2021.dir/depend
 

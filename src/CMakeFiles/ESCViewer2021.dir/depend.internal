@@ -4,14 +4,11 @@
 CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o
  /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/main_ispc.cpp
  /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/math/vec.h
- /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/camera.h
  /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/ispc.h
- /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/ray_triangle.h
  /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/scene.h
- /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.h
 CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o
- /Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/math/vec.h
- /Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/scene.h
- /Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/sceneloader.cpp
- /Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/sceneloader.h
- /Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/scene/tiny_obj_loader.h
+ /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/math/vec.h
+ /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/scene.h
+ /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.cpp
+ /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/sceneloader.h
+ /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/scene/tiny_obj_loader.h

@@ -54,19 +54,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/Cellar/cmake/3.19.5/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/Cellar/cmake/3.19.5/bin/cmake -E rm -f
+RM = /usr/local/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src"
+CMAKE_SOURCE_DIR = /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src"
+CMAKE_BINARY_DIR = /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -93,14 +93,14 @@ clean: CMakeFiles/ESCViewer2021.dir/clean
 CMakeFiles/ESCViewer2021.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ESCViewer2021.dir/build.make CMakeFiles/ESCViewer2021.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ESCViewer2021.dir/build.make CMakeFiles/ESCViewer2021.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/CMakeFiles" --progress-num=1,2,3 "Built target ESCViewer2021"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles --progress-num=1,2,3 "Built target ESCViewer2021"
 .PHONY : CMakeFiles/ESCViewer2021.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/ESCViewer2021.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/CMakeFiles" 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/ESCViewer2021.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/tarly127/Desktop/4_2/Engenharia de Sistemas de Computação/ESC_TP/ESC_TP1/ESC/src/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ruizinho/Desktop/Universidade/Mestrado/CPD/ESC/tracer/src/CMakeFiles 0
 .PHONY : CMakeFiles/ESCViewer2021.dir/rule
 
 # Convenience name for target.

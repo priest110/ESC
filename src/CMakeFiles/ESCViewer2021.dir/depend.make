@@ -3,11 +3,8 @@
 
 CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: main_ispc.cpp
 CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: math/vec.h
-CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: scene/camera.h
 CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: scene/ispc.h
-CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: scene/ray_triangle.h
 CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: scene/scene.h
-CMakeFiles/ESCViewer2021.dir/main_ispc.cpp.o: scene/sceneloader.h
 
 CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o: math/vec.h
 CMakeFiles/ESCViewer2021.dir/scene/sceneloader.cpp.o: scene/scene.h
