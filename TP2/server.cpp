@@ -9,6 +9,7 @@
 #include <sstream>
 #include <vector>
 #include <thread>
+#include <mutex>
 #include "hash.h"
 
 #define PORT    6000            // port
@@ -16,9 +17,10 @@
 #define DISCO   1073741824      // bytes == 1 GB
 #define N       1024            // array size
 
+std::mutex mtx;
+
 /* Devolve registo que esteja em disco com determinada key */
 std::string file_get(long long key){
-    //long long h_key = hash::Hash::hashFunction(key);
     std::ifstream File("file.txt");
     std::string line;
     while (getline(File,line)){
@@ -52,10 +54,12 @@ std::string file_put(long long key, std::string value){
         toINT >> op;
         if(op == key)
         {
+            mtx.lock();
             long x = line.length()+1;
             long t = file.tellg() - x;
             file.seekp(t);
             t = file.tellp();
+            mtx.unlock();
             file.clear();
             file << key << " " << value << "\n";
             file.close();

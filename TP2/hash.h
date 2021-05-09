@@ -2,12 +2,15 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
+#include <mutex>
 #include <algorithm>  //for std::generate_n
 
 #define MEMORIA 104857600       // bytes == 100 MB
 #define DISCO   1073741824      // bytes == 1 GB
 
 /* 100 megas para memória e 1G para disco */
+
+std::mutex mtx;
 
 namespace hash {
     class Hash_Elem{ 
@@ -57,9 +60,11 @@ namespace hash {
 
     void Hash::putElem(Hash_Elem b){
         int i = hashFunction(b.toKey());               // get the hash index of key
+        mtx.lock();
         if(table[i].size() != 0)
             table[i].pop_back();
         table[i].push_back(b);
+        mtx.unlock();
     }
 
     std::string Hash::getElem(long long key){
