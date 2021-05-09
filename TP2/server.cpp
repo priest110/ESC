@@ -18,6 +18,7 @@
 
 /* Devolve registo que esteja em disco com determinada key */
 std::string file_get(long long key){
+    //long long h_key = hash::Hash::hashFunction(key);
     std::ifstream File("file.txt");
     std::string line;
     while (getline(File,line)){
@@ -40,14 +41,17 @@ std::string file_get(long long key){
 /* Insere registo em disco */
 std::string file_put(long long key, std::string value){
     std::fstream file;
+    //long long h_key = hash::Hash::hashFunction(key);
     file.open("file.txt", std::ios::in |std::ios::out);
     std::string line;
-    while (getline(file,line)){
+    while (getline(file,line))
+    {
         size_t pos = line.find(" ");
         std::stringstream toINT(line.substr(0, pos));
         int op = 0;
         toINT >> op;
-        if(op == key){
+        if(op == key)
+        {
             long x = line.length()+1;
             long t = file.tellg() - x;
             file.seekp(t);
@@ -72,24 +76,30 @@ std::string handle_query(hash::Hash h, char option[N*N]){
     query.erase(0, pos + std::string("\n").length()); 
 
     pos = query.find("\n");
-    long long key = std::stol(query.substr(0, pos));            // key
-    
-    if(op == 0){
-        if(h.size() > key)
-            return std::string(h.getElem(key));
-        else
-            return file_get(key);
-    }
-    else{
-        query.erase(0, pos + std::string("\n").length());
-        pos = query.find("\n");
-        std::string value = query.substr(0, query.find("\n"));  // value
-        if(h.size() > key){
-            h.putElem(hash::Hash_Elem(key, value));
-            return "-- PUT realizado com sucesso --";
+    try
+    {
+        long long key = h.hashFunction(std::stol(query.substr(0, pos)));        // key
+        if(op == 0){
+            if(h.size() > key)
+                return std::string(h.getElem(key));
+            else
+                return file_get(key);
         }
-        else
-            return file_put(key, value);
+        else{
+            query.erase(0, pos + std::string("\n").length());
+            pos = query.find("\n");
+            std::string value = query.substr(0, query.find("\n"));  // value
+            if(h.size() > key){
+                h.putElem(hash::Hash_Elem(key, value));
+                return "-- PUT realizado com sucesso --";
+            }
+            else
+                return file_put(key, value);
+        }
+    }
+    catch(const std::out_of_range)
+    {
+        return "OUT OF RANGE";
     }
 }
 
@@ -148,7 +158,7 @@ int main(int argc, char *argv[]){
 
     /* (opcional) Ajuda no reutilização do endereço ou da porta. Previne erros como "address already in use" */
     int opt = 1;
-    if(setsockopt(fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
+    if(setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)))
         perror("setsockopt");
 
     /* Setup do address para o bind */

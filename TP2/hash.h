@@ -36,13 +36,13 @@ namespace hash {
     }
 
     class Hash {
-        int SIZE;                                   // nº de entradas da hash
+        long long SIZE;                                   // nº de entradas da hash
         std::list<Hash_Elem> *table;                // apontador para o array que contém as entradas da hash
 
         public:
             Hash(int t); 
             void putElem(Hash_Elem b);              // put key
-            int hashFunction(long long key){        // map values to key
+            long long hashFunction(long long key){        // map values to key
                 return(key % SIZE);
             }
             std::string getElem(long long key);           // get key
@@ -63,8 +63,9 @@ namespace hash {
     }
 
     std::string Hash::getElem(long long key){
-        if(table[key].size() != 0)
-            return table[key].front().toString();
+        long long h_key = hashFunction(key);
+        if(table[h_key].size() != 0)
+            return table[h_key].front().toString();
         return NULL;
     }
 
