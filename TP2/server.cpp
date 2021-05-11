@@ -17,7 +17,7 @@
 #define DISCO   1073741824      // bytes == 1 GB
 #define N       1024            // array size
 
-std::mutex mtx;
+std::mutex lock;
 
 /* Devolve registo que esteja em disco com determinada key */
 std::string file_get(long long key){
@@ -54,12 +54,12 @@ std::string file_put(long long key, std::string value){
         toINT >> op;
         if(op == key)
         {
-            mtx.lock();
+            lock.lock();
             long x = line.length()+1;
             long t = file.tellg() - x;
             file.seekp(t);
             t = file.tellp();
-            mtx.unlock();
+            lock.unlock();
             file.clear();
             file << key << " " << value << "\n";
             file.close();
