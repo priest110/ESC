@@ -5,11 +5,6 @@
 #include <mutex>
 #include <algorithm>  //for std::generate_n
 
-#define MEMORIA 104857600       // bytes == 100 MB
-#define DISCO   1073741824      // bytes == 1 GB
-
-/* 100 megas para memória e 1G para disco */
-
 std::mutex mtx;
 
 namespace hash {
@@ -102,28 +97,5 @@ namespace hash {
         std::string str(length,0);
         std::generate_n( str.begin(), length, randchar );
         return str;
-    }
-
-    int main(){
-        int tam = MEMORIA / 1032; // tam = 101606 registos em memória
-        Hash h(tam);
-        long long key = 0;
-        for(int i = 0; i < tam; i++){
-            std::string s = random_string(1024);
-            h.putElem(Hash_Elem(key++, s));
-        }
-
-        h.show();
-
-        tam = DISCO/1032;         // tam = 1040447 registos em disco
-        
-        std::ofstream File("file.txt");
-        for(int i = 0; i < tam; i++){
-            std::string s = random_string(1024);
-            File << key++ << " " << s << "\n";
-        }
-        File.close();
-
-        return 0;
     }
 }
