@@ -16,7 +16,7 @@
 
 #define PORT    6000            // port
 #define MEMORIA 104857600       // bytes == 100 MB
-#define DISCO   104857600      // bytes == 1 GB
+#define DISCO   1073741824      // bytes == 1 GB
 #define N       1024            // array size
 
 /* 100 megas para memória e 1G para disco */
