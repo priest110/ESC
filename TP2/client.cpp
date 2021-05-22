@@ -11,6 +11,7 @@
 #define N       1024            // array size
 
 int main(int argc, char *argv[]){
+    int client_id = atoi(argv[1]);
     int sock = 0, val;
     struct sockaddr_in serv_address;             // structure for handling internet addresses
     char buffer[N*N] = {0};
@@ -43,15 +44,15 @@ int main(int argc, char *argv[]){
             strcat(buffer, key.c_str());
             strcat(buffer, value.c_str());
         }
-        printf("Mandei\n");
+        printf("Mandei (%d)\n", client_id);
         auto start = std::chrono::steady_clock::now();
         send(sock, buffer, strlen(buffer), 0);
         bzero(buffer, N*N);
         val = read(sock, buffer, N*N);
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double> duration = end-start;
-        //printf(">> %s\n", buffer);
-        printf("Tempo de pedido-resposta: %f sec\n", duration.count());
+        printf(">> Recebi\n");
+        printf("Tempo de pedido-resposta (%d): %f sec\n", client_id, duration.count());
     }
     return 0;
 }

@@ -11,6 +11,7 @@
 #include <thread>
 #include <iomanip>
 #include <mutex>
+#include <atomic>
 #include <sys/stat.h>
 #include "hash.h"
 
@@ -23,15 +24,21 @@
 
 std::mutex mtx_file;
 
-double count = 0;
+std::atomic<long> count(0);
 
 /* Devolve registo que esteja em disco com determinada key */
 std::string file_get(long long key, int hash_size){
-    std::ifstream File("file.txt");
+    std::ifstream File("db.txt");
     std::string line;
-    File.seekg(((key % (hash_size + DISCO/(1024+20+1+1)))- hash_size)*(1024+20+1+1));
-    getline(File, line);
     size_t pos = 20;
+    mtx_file.lock();
+    auto start = std::chrono::steady_clock::now();
+    File.seekg(((key % (hash_size + DISCO/(1024+20+1+1)))- hash_size)*(1024+20+1+1));
+    auto end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> duration = end-start;
+    printf("Tempo de abrir ficheiro: %f", duration.count());
+    getline(File, line);
+    mtx_file.unlock();
     line.erase(0, pos + std::string(" ").length()); 
     pos = line.find("\n");
     std::string value = line.substr(0, line.find("\n")).c_str();
@@ -42,24 +49,27 @@ std::string file_get(long long key, int hash_size){
 /* Insere registo em disco */
 std::string file_put(long long key, std::string value, int hash_size){
     std::fstream file;
-    file.open("file.txt", std::ios::in |std::ios::out);
+    file.open("db.txt", std::ios::in |std::ios::out);
     std::string line;
-    file.seekg(((key % (hash_size + DISCO/(1024+20+1+1)))- hash_size)*(1024+20+1+1));
-    getline(file,line);
     size_t pos = 20;
+    int op = 0;
+    mtx_file.lock();
+    file.seekg(((key % (hash_size + DISCO/(1024+20+1+1)))- hash_size)*(1024+20+1+1));
+    auto start = std::chrono::steady_clock::now();
+    getline(file,line);
     std::string line_aux = line.substr(0, pos);
     remove(line_aux.begin(), line_aux.end(), ' ');
     std::stringstream toINT(line_aux);
-    int op = 0;
     toINT >> op;
-    mtx_file.lock();
     long x = line.length()+1;
     long t = file.tellg() - x;
     file.seekp(t);
-    t = file.tellp();
-    mtx_file.unlock();
     file.clear();
     file << std::setfill(' ') << std::setw(20) << key << " " << value << "\n";
+    auto end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> duration = end-start;
+    printf("Tempo de abrir ficheiro: %f\n", duration.count());
+    mtx_file.unlock();
     file.close();
     return "-- PUT realizado com sucesso --";
 }
@@ -76,14 +86,17 @@ std::string handle_query(hash::Hash h, char option[N*N]){
     pos = query.find("\n");
     try{
         long long key = std::stol(query.substr(0, pos)) % (MEMORIA/1024+8 + DISCO/(1024+20+1+1)) ;        // key
-        std::cout << "Key: " << key  << "\n";
+        //std::cout << "Key: " << key  << "\n";
         if(op == 0){
             if(h.size() > key)
                 return std::string(h.getElem(key));
             else if(key < h.size() + DISCO/(1024+20+1+1)){
-
-                printf("--- Key não existe ---\n");
-                return file_get(key, h.size());
+                auto start = std::chrono::steady_clock::now();
+                std::string value = file_get(key, h.size());
+                auto end = std::chrono::steady_clock::now();
+                std::chrono::duration<double> duration = end-start;
+                printf("--- GET ficheiro: %f s ---\n", duration.count());
+                return value;
             }
             else{
                 return "--- Key não existe ---";
@@ -97,8 +110,14 @@ std::string handle_query(hash::Hash h, char option[N*N]){
                 h.putElem(hash::Hash_Elem(key, value));
                 return "-- PUT realizado com sucesso --";
             }
-            else
-                return file_put(key, value, h.size());
+            else{
+                auto start = std::chrono::steady_clock::now();
+                std::string res = file_put(key, value, h.size());
+                auto end = std::chrono::steady_clock::now();
+                std::chrono::duration<double> duration = end-start;
+                printf("--- PUT ficheiro: %f s ---\n", duration.count());
+                return res;
+            }
         }
     }
     catch(const std::out_of_range)
@@ -114,24 +133,25 @@ void handle_client(hash::Hash h, int sock){
     auto start = std::chrono::steady_clock::now();
     auto end = std::chrono::steady_clock::now();
     std::chrono::duration<double> duration = end - start;
-    while (duration.count() < 1.f){
-        bzero(buffer, N*N);
-        val = read(sock, buffer, N*N);
-        if(val == 0)                        // determinado cliente saiu
-            continue;
-        if(val < 0 )
-            break;
-        mtx.lock();
-        count++;
-        mtx.unlock();
-        printf("Mensagem recebida: %s\n", buffer);
-        strcpy(buffer, handle_query(h, buffer).c_str());
-        send(sock, buffer, strlen(buffer), 0);
-        printf("Mandei\n");
-        end = std::chrono::steady_clock::now();
-        duration = end-start;
+    /* Cliente faz pedidos durante 1s */
+    while(true){
+        duration = end-end;
+        while (duration.count() < 1.f){
+            bzero(buffer, N*N);
+            val = read(sock, buffer, N*N);
+            if(val == 0)                                                // determinado cliente saiu
+                    continue;
+            if(val < 0 )
+                    break;
+            count++;            //printf("Mensagem recebida: %s\n", buffer);
+            strcpy(buffer, handle_query(h, buffer).c_str());
+            send(sock, buffer, strlen(buffer), 0);
+            printf("Mandei\n");
+            end = std::chrono::steady_clock::now();
+            duration = end-start;
+        }
+        printf("Número de pedidos por segundo: %lu && %f\n", count.load(), duration.count());
     }
-    printf("Número do pedidos por segundo: %f\n", count);
 }
 
 /* Verifica se um ficheiro existe */
@@ -153,8 +173,8 @@ hash::Hash data(){
     //h.show();
 
     int tam = DISCO/ (1024+20+1+1);                       // tam = 1040447 registos em disco
-    if(!file_exists("file.txt")){
-        std::ofstream File("file.txt", std::ios::trunc);
+    if(!file_exists("db.txt")){
+        std::ofstream File("db.txt", std::ios::trunc);
         for(int i = 0; i < tam; i++){
             std::string s = hash::random_string(N);
             File << std::setfill(' ') << std::setw(20) << key++ << " " << s << "\n";

@@ -1,7 +1,8 @@
 
 
 CXX = g++
-CXXFLAGS = -O3 -pthread
+CXXFLAGS = -O3 -pthread -std=c++17
+
 
 
 .DEFAULT_GOAL = main
