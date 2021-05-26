@@ -23,54 +23,46 @@
 /* 100 megas para memória e 1G para disco */
 
 std::mutex mtx_file;
-
 std::atomic<long> count(0);
+
+std::fstream ifile;
+std::ifstream rfile("db.txt");
+
 
 /* Devolve registo que esteja em disco com determinada key */
 std::string file_get(long long key, int hash_size){
-    std::ifstream File("db.txt");
     std::string line;
     size_t pos = 20;
     mtx_file.lock();
-    auto start = std::chrono::steady_clock::now();
-    File.seekg(((key % (hash_size + DISCO/(1024+20+1+1)))- hash_size)*(1024+20+1+1));
-    auto end = std::chrono::steady_clock::now();
-    std::chrono::duration<double> duration = end-start;
-    printf("Tempo de abrir ficheiro: %f", duration.count());
-    getline(File, line);
+    rfile.seekg(((key % (hash_size + DISCO/(1024+20+1+1)))- hash_size)*(1024+20+1+1));
+    getline(rfile, line);
     mtx_file.unlock();
     line.erase(0, pos + std::string(" ").length()); 
     pos = line.find("\n");
     std::string value = line.substr(0, line.find("\n")).c_str();
-    File.close();
+    //File.close();
     return value;
 }
 
 /* Insere registo em disco */
 std::string file_put(long long key, std::string value, int hash_size){
-    std::fstream file;
-    file.open("db.txt", std::ios::in |std::ios::out);
     std::string line;
     size_t pos = 20;
     int op = 0;
     mtx_file.lock();
-    file.seekg(((key % (hash_size + DISCO/(1024+20+1+1)))- hash_size)*(1024+20+1+1));
-    auto start = std::chrono::steady_clock::now();
-    getline(file,line);
+    ifile.seekg(((key % (hash_size + DISCO/(1024+20+1+1)))- hash_size)*(1024+20+1+1));
+    getline(ifile,line);
     std::string line_aux = line.substr(0, pos);
     remove(line_aux.begin(), line_aux.end(), ' ');
     std::stringstream toINT(line_aux);
     toINT >> op;
     long x = line.length()+1;
-    long t = file.tellg() - x;
-    file.seekp(t);
-    file.clear();
-    file << std::setfill(' ') << std::setw(20) << key << " " << value << "\n";
-    auto end = std::chrono::steady_clock::now();
-    std::chrono::duration<double> duration = end-start;
-    printf("Tempo de abrir ficheiro: %f\n", duration.count());
+    long t = (long)ifile.tellg() - x;
+    ifile.seekp(t);
+    ifile.clear();
+    ifile << std::setfill(' ') << std::setw(20) << key << " " << value << "\n";
     mtx_file.unlock();
-    file.close();
+    //ifile.close();
     return "-- PUT realizado com sucesso --";
 }
 
@@ -130,27 +122,30 @@ std::string handle_query(hash::Hash h, char option[N*N]){
 void handle_client(hash::Hash h, int sock){
     int val;
     char buffer[N*N] = {0};
+
     auto start = std::chrono::steady_clock::now();
     auto end = std::chrono::steady_clock::now();
+
     std::chrono::duration<double> duration = end - start;
-    /* Cliente faz pedidos durante 1s */
+    
+
     while(true){
         duration = end-end;
         while (duration.count() < 1.f){
             bzero(buffer, N*N);
             val = read(sock, buffer, N*N);
-            if(val == 0)                                                // determinado cliente saiu
+            if(val == 0)
                     continue;
             if(val < 0 )
                     break;
             count++;            //printf("Mensagem recebida: %s\n", buffer);
             strcpy(buffer, handle_query(h, buffer).c_str());
             send(sock, buffer, strlen(buffer), 0);
-            printf("Mandei\n");
+            //printf("Mandei\n");
             end = std::chrono::steady_clock::now();
             duration = end-start;
         }
-        printf("Número de pedidos por segundo: %lu && %f\n", count.load(), duration.count());
+        printf("Número de pedidos por segundo: %lu && %f (avg = %f)\n", count.load(), duration.count(), count.load() / duration.count());
     }
 }
 
@@ -216,6 +211,10 @@ int main(int argc, char *argv[]){
         perror("listen falhou");
 
     hash::Hash h = data();
+
+    /* Abrir uma filestream para o ficheiro */
+
+    ifile.open("db.txt", std::ios::in |std::ios::out);
 
     /* Aceita conexão */
     

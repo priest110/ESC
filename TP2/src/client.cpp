@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 
     srand(time(nullptr));
     while(true){
-        std::string option = std::to_string(rand() % 2) + "\n";
+        std::string option = std::to_string(rand() % 21 == 0 ? 1 : 0)  + "\n";
         bzero(buffer, N*N);
         strcat(buffer, option.c_str());
         if(option.compare("0\n") == 0){
@@ -44,14 +44,14 @@ int main(int argc, char *argv[]){
             strcat(buffer, key.c_str());
             strcat(buffer, value.c_str());
         }
-        printf("Mandei (%d)\n", client_id);
+        //printf("Mandei (%d)\n", client_id);
         auto start = std::chrono::steady_clock::now();
         send(sock, buffer, strlen(buffer), 0);
         bzero(buffer, N*N);
         val = read(sock, buffer, N*N);
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double> duration = end-start;
-        printf(">> Recebi\n");
+        //printf(">> Recebi\n");
         printf("Tempo de pedido-resposta (%d): %f sec\n", client_id, duration.count());
     }
     return 0;
