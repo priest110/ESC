@@ -1,7 +1,7 @@
 
 
 CXX = g++
-CXXFLAGS = -O3 -pthread -std=c++11
+CXXFLAGS = -O3 -pthread -std=c++17
 
 BIN = bin/
 SRC = src/

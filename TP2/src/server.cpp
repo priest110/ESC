@@ -24,6 +24,7 @@
 
 std::mutex mtx_file;
 std::atomic<long> count(0);
+std::atomic<long> gcount(0);
 
 std::fstream ifile;
 std::ifstream rfile("db.txt");
@@ -81,13 +82,20 @@ std::string handle_query(hash::Hash h, char option[N*N]){
         //std::cout << "Key: " << key  << "\n";
         if(op == 0){
             if(h.size() > key)
-                return std::string(h.getElem(key));
+            {
+                auto start = std::chrono::steady_clock::now();
+                std::string res = std::string(h.getElem(key));
+                auto end = std::chrono::steady_clock::now();
+                std::chrono::duration<double> duration = end-start;
+                printf("gm %f\n", duration.count());
+                return res;
+            }
             else if(key < h.size() + DISCO/(1024+20+1+1)){
                 auto start = std::chrono::steady_clock::now();
                 std::string value = file_get(key, h.size());
                 auto end = std::chrono::steady_clock::now();
                 std::chrono::duration<double> duration = end-start;
-                printf("--- GET ficheiro: %f s ---\n", duration.count());
+                printf("gd %f\n", duration.count());
                 return value;
             }
             else{
@@ -99,7 +107,11 @@ std::string handle_query(hash::Hash h, char option[N*N]){
             pos = query.find("\n");
             std::string value = query.substr(0, query.find("\n"));  // value
             if(h.size() > key){
+                auto start = std::chrono::steady_clock::now();
                 h.putElem(hash::Hash_Elem(key, value));
+                auto end = std::chrono::steady_clock::now();
+                std::chrono::duration<double> duration = end-start;
+                printf("pm %f\n", duration.count());
                 return "-- PUT realizado com sucesso --";
             }
             else{
@@ -107,7 +119,7 @@ std::string handle_query(hash::Hash h, char option[N*N]){
                 std::string res = file_put(key, value, h.size());
                 auto end = std::chrono::steady_clock::now();
                 std::chrono::duration<double> duration = end-start;
-                printf("--- PUT ficheiro: %f s ---\n", duration.count());
+                printf("pd %f\n", duration.count());
                 return res;
             }
         }
@@ -119,7 +131,7 @@ std::string handle_query(hash::Hash h, char option[N*N]){
 }
 
 /* Handle da conexão com o cliente */
-void handle_client(hash::Hash h, int sock){
+void handle_client(hash::Hash h, int sock, unsigned t_id){
     int val;
     char buffer[N*N] = {0};
 
@@ -131,6 +143,7 @@ void handle_client(hash::Hash h, int sock){
 
     while(true){
         duration = end-end;
+        start = std::chrono::steady_clock::now();
         while (duration.count() < 1.f){
             bzero(buffer, N*N);
             val = read(sock, buffer, N*N);
@@ -138,14 +151,22 @@ void handle_client(hash::Hash h, int sock){
                     continue;
             if(val < 0 )
                     break;
-            count++;            //printf("Mensagem recebida: %s\n", buffer);
+            count++;
+            gcount++;
             strcpy(buffer, handle_query(h, buffer).c_str());
             send(sock, buffer, strlen(buffer), 0);
             //printf("Mandei\n");
             end = std::chrono::steady_clock::now();
             duration = end-start;
+            if(gcount.load() >= 1000000) exit(0);
         }
-        printf("Número de pedidos por segundo: %lu && %f (avg = %f)\n", count.load(), duration.count(), count.load() / duration.count());
+        //printf("%f\n", count.load() / duration.count());
+        if( t_id == 0 )
+        {
+            //printf("(%d) Número de pedidos por segundo: %lu && %f (avg = %f)\n", t_id, count.load(), duration.count(), count.load() / duration.count());
+            //printf("%f\n", count.load() / duration.count());
+            count.store(0);
+        } 
     }
 }
 
@@ -177,7 +198,7 @@ hash::Hash data(){
         File.close();
     }
 
-    printf("-- DADOS CARREGADOS --\n");
+    //printf("-- DADOS CARREGADOS --\n");
     return h;
 }
 
@@ -217,12 +238,15 @@ int main(int argc, char *argv[]){
     ifile.open("db.txt", std::ios::in |std::ios::out);
 
     /* Aceita conexão */
+
+    unsigned t_id = 0;
     
     while(true){
         sock = accept(fd, (struct sockaddr *)&address, (socklen_t*)&address_len);
         if(sock < 0)
             perror("accept falhou\n");    
-        threads.push_back(std::thread(&handle_client, h, sock));
+        threads.push_back(std::thread(&handle_client, h, sock, t_id));
+        t_id++;
     }
 
     for(auto &t: threads)
