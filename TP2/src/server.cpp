@@ -23,34 +23,42 @@
 /* 100 megas para memória e 1G para disco */
 
 std::mutex mtx_file;
-std::atomic<long> count(0);
-std::atomic<long> gcount(0);
+//std::atomic<long> count(0);
+//std::atomic<long> gcount(0);
 
 std::fstream ifile;
 std::ifstream rfile("db.txt");
 
 
 /* Devolve registo que esteja em disco com determinada key */
-std::string file_get(long long key, int hash_size){
+std::string file_get(long long key, int hash_size)
+{
     std::string line;
     size_t pos = 20;
+
     mtx_file.lock();
+    
     rfile.seekg(((key % (hash_size + DISCO/(1024+20+1+1)))- hash_size)*(1024+20+1+1));
     getline(rfile, line);
+    
     mtx_file.unlock();
+    
     line.erase(0, pos + std::string(" ").length()); 
     pos = line.find("\n");
     std::string value = line.substr(0, line.find("\n")).c_str();
-    //File.close();
+
     return value;
 }
 
 /* Insere registo em disco */
-std::string file_put(long long key, std::string value, int hash_size){
+std::string file_put(long long key, std::string value, int hash_size)
+{
     std::string line;
     size_t pos = 20;
     int op = 0;
+
     mtx_file.lock();
+    
     ifile.seekg(((key % (hash_size + DISCO/(1024+20+1+1)))- hash_size)*(1024+20+1+1));
     getline(ifile,line);
     std::string line_aux = line.substr(0, pos);
@@ -62,13 +70,15 @@ std::string file_put(long long key, std::string value, int hash_size){
     ifile.seekp(t);
     ifile.clear();
     ifile << std::setfill(' ') << std::setw(20) << key << " " << value << "\n";
+    
     mtx_file.unlock();
-    //ifile.close();
-    return "-- PUT realizado com sucesso --";
+    
+    return "0";
 }
 
 /* Handle da resposta ao pedido do cliente */
-std::string handle_query(hash::Hash h, char option[N*N]){
+std::string handle_query(hash::Hash h, char option[N*N])
+{
     std::string query(option); 
     size_t pos = query.find("\n");
     std::stringstream toINT(query.substr(0, pos));              // option
@@ -83,23 +93,23 @@ std::string handle_query(hash::Hash h, char option[N*N]){
         if(op == 0){
             if(h.size() > key)
             {
-                auto start = std::chrono::steady_clock::now();
+                //auto start = std::chrono::steady_clock::now();
                 std::string res = std::string(h.getElem(key));
-                auto end = std::chrono::steady_clock::now();
-                std::chrono::duration<double> duration = end-start;
-                printf("gm %f\n", duration.count());
+                //auto end = std::chrono::steady_clock::now();
+                //std::chrono::duration<double> duration = end-start;
+                //printf("g %f\n", duration.count());
                 return res;
             }
             else if(key < h.size() + DISCO/(1024+20+1+1)){
-                auto start = std::chrono::steady_clock::now();
+                //auto start = std::chrono::steady_clock::now();
                 std::string value = file_get(key, h.size());
-                auto end = std::chrono::steady_clock::now();
-                std::chrono::duration<double> duration = end-start;
-                printf("gd %f\n", duration.count());
+                //auto end = std::chrono::steady_clock::now();
+                //std::chrono::duration<double> duration = end-start;
+                //printf("g %f\n", duration.count());
                 return value;
             }
             else{
-                return "--- Key não existe ---";
+                return "0";
             }
         }
         else{
@@ -107,26 +117,26 @@ std::string handle_query(hash::Hash h, char option[N*N]){
             pos = query.find("\n");
             std::string value = query.substr(0, query.find("\n"));  // value
             if(h.size() > key){
-                auto start = std::chrono::steady_clock::now();
+                //auto start = std::chrono::steady_clock::now();
                 h.putElem(hash::Hash_Elem(key, value));
-                auto end = std::chrono::steady_clock::now();
-                std::chrono::duration<double> duration = end-start;
-                printf("pm %f\n", duration.count());
-                return "-- PUT realizado com sucesso --";
+                //auto end = std::chrono::steady_clock::now();
+                //std::chrono::duration<double> duration = end-start;
+                //printf("p %f\n", duration.count());
+                return "1";
             }
             else{
-                auto start = std::chrono::steady_clock::now();
+                //auto start = std::chrono::steady_clock::now();
                 std::string res = file_put(key, value, h.size());
-                auto end = std::chrono::steady_clock::now();
-                std::chrono::duration<double> duration = end-start;
-                printf("pd %f\n", duration.count());
+                //auto end = std::chrono::steady_clock::now();
+                //std::chrono::duration<double> duration = end-start;
+                //printf("p %f\n", duration.count());
                 return res;
             }
         }
     }
     catch(const std::out_of_range)
     {
-        return "OUT OF RANGE";
+        return "0";
     }
 }
 
@@ -135,38 +145,37 @@ void handle_client(hash::Hash h, int sock, unsigned t_id){
     int val;
     char buffer[N*N] = {0};
 
-    auto start = std::chrono::steady_clock::now();
-    auto end = std::chrono::steady_clock::now();
+    //auto start = std::chrono::steady_clock::now();
+    //auto end = std::chrono::steady_clock::now();
 
-    std::chrono::duration<double> duration = end - start;
+    //std::chrono::duration<double> duration = end - start;
     
 
     while(true){
-        duration = end-end;
-        start = std::chrono::steady_clock::now();
-        while (duration.count() < 1.f){
+        //duration = end-end;
+        //start = std::chrono::steady_clock::now();
+        //while (duration.count() < 1.f){
             bzero(buffer, N*N);
             val = read(sock, buffer, N*N);
             if(val == 0)
                     continue;
             if(val < 0 )
                     break;
-            count++;
-            gcount++;
+            //count++;
+            //gcount++;
             strcpy(buffer, handle_query(h, buffer).c_str());
             send(sock, buffer, strlen(buffer), 0);
-            //printf("Mandei\n");
-            end = std::chrono::steady_clock::now();
-            duration = end-start;
-            if(gcount.load() >= 1000000) exit(0);
-        }
+            //end = std::chrono::steady_clock::now();
+            //duration = end-start;
+            //if(gcount.load() >= 1000000) exit(0);
+        //}
         //printf("%f\n", count.load() / duration.count());
-        if( t_id == 0 )
-        {
-            //printf("(%d) Número de pedidos por segundo: %lu && %f (avg = %f)\n", t_id, count.load(), duration.count(), count.load() / duration.count());
-            //printf("%f\n", count.load() / duration.count());
-            count.store(0);
-        } 
+        //if( t_id == 0 )
+        //{
+        //    //printf("(%d) Número de pedidos por segundo: %lu && %f (avg = %f)\n", t_id, count.load(), duration.count(), count.load() / duration.count());
+        //    //printf("%f\n", count.load() / duration.count());
+        //    count.store(0);
+        //} 
     }
 }
 

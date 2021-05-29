@@ -45,14 +45,15 @@ int main(int argc, char *argv[]){
             strcat(buffer, value.c_str());
         }
         //printf("Mandei (%d)\n", client_id);
-        auto start = std::chrono::steady_clock::now();
+        //auto start = std::chrono::steady_clock::now();
         send(sock, buffer, strlen(buffer), 0);
         bzero(buffer, N*N);
         val = read(sock, buffer, N*N);
-        auto end = std::chrono::steady_clock::now();
-        std::chrono::duration<double> duration = end-start;
+        //auto end = std::chrono::steady_clock::now();
+        //std::chrono::duration<double> duration = end-start;
+        //std::cout << buffer << std::endl;
         //printf(">> Recebi\n");
-        printf("Tempo de pedido-resposta (%d): %f sec\n", client_id, duration.count());
+        //printf("Tempo de pedido-resposta (%d): %f sec\n", client_id, duration.count());
     }
     return 0;
 }
